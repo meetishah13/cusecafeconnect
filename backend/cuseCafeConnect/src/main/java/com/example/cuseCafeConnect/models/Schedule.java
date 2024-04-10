@@ -1,6 +1,12 @@
 package com.example.cuseCafeConnect.models;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "schedule")
 public class Schedule {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int scheduleID;
     private int timeSlotID;
     private int userID;
