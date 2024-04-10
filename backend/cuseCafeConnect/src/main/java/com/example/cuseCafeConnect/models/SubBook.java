@@ -1,9 +1,14 @@
 package com.example.cuseCafeConnect.models;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
-
+@Entity
+@Table(name = "subBook")
 public class SubBook {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int subID;
+
     private int subTypeID;
     private LocalDateTime dropDate;
     private int dropUser;
