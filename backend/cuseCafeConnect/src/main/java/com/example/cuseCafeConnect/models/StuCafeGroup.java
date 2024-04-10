@@ -1,6 +1,16 @@
 package com.example.cuseCafeConnect.models;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "stu_cafe_group")
 public class StuCafeGroup {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int stuCafeGrpID;
     private int userID;
     private int cafeID;
@@ -71,5 +81,13 @@ public class StuCafeGroup {
     public void setIsAccepted(int isAccepted) {
         this.isAccepted = isAccepted;
     }
+
+    @Override
+    public String toString() {
+        return "StuCafeGroup [stuCafeGrpID=" + stuCafeGrpID + ", userID=" + userID + ", cafeID=" + cafeID
+                + ", isAccepted=" + isAccepted + "]";
+    }
+
+    
 
 }
