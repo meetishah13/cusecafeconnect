@@ -1,24 +1,35 @@
 package com.example.cuseCafeConnect.models;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "roles")
 public class Roles {
-	private int roleID;
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int roleId;
+    
     private String roleName;
 
-    // Constructors
-    public Roles() {}
+    public Roles() {
+    }
 
-    public Roles(int roleID, String roleName) {
-        this.roleID = roleID;
+    public Roles(int roleId, String roleName) {
+        this.roleId = roleId;
         this.roleName = roleName;
     }
 
-    // Getters and setters
-    public int getRoleID() {
-        return roleID;
+    public int getRoleId() {
+        return roleId;
     }
 
-    public void setRoleID(int roleID) {
-        this.roleID = roleID;
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 
     public String getRoleName() {
@@ -29,6 +40,3 @@ public class Roles {
         this.roleName = roleName;
     }
 }
-
-
-
