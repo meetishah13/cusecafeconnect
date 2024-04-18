@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.example.cuseCafeConnect.models.User;
+import com.example.cuseCafeConnect.models.LoginResult;
 import com.example.cuseCafeConnect.repositories.UserRepository;
 import com.example.cuseCafeConnect.services.UserService;
 
@@ -47,34 +48,34 @@ public class UserServiceImpl implements UserService {
     }
 
     public ResponseEntity<Object> updateUserDetails(User user) {
-    Optional<User> existingUserOptional = userRepository.findById(user.getUserID());
-    if (existingUserOptional.isPresent()) {
-        User existingUser = existingUserOptional.get();
-        existingUser.setUserEmail(user.getUserEmail());
-        existingUser.setfName(user.getfName());
-        existingUser.setlName(user.getlName());
-        existingUser.setPassword(user.getPassword());
-        existingUser.setPhoneNo(user.getPhoneNo());
-        existingUser.setRoleID(user.getRoleID());
-        existingUser.setCafeID(user.getCafeID());
-        existingUser.setPhotoPath(user.getPhotoPath());
-        User updatedUser = userRepository.save(existingUser);
-        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
-    } else {
-        
-        return new ResponseEntity<>("User with the given userID not found", HttpStatus.NOT_FOUND);
+        Optional<User> existingUserOptional = userRepository.findById(user.getUserID());
+        if (existingUserOptional.isPresent()) {
+            User existingUser = existingUserOptional.get();
+            existingUser.setUserEmail(user.getUserEmail());
+            existingUser.setfName(user.getfName());
+            existingUser.setlName(user.getlName());
+            existingUser.setPassword(user.getPassword());
+            existingUser.setPhoneNo(user.getPhoneNo());
+            existingUser.setRoleID(user.getRoleID());
+            existingUser.setCafeID(user.getCafeID());
+            existingUser.setPhotoPath(user.getPhotoPath());
+            User updatedUser = userRepository.save(existingUser);
+            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+        } else {
+
+            return new ResponseEntity<>("User with the given userID not found", HttpStatus.NOT_FOUND);
+        }
     }
-}
 
     @Override
-    public boolean verifyLogin(String emailId, String password) {
-        User user = userRepository.findByUserEmail(emailId); 
+    public LoginResult verifyLogin(String emailId, String password) {
+        User user = userRepository.findByUserEmail(emailId);
         if (user == null) {
-            return false; 
+            return new LoginResult(false, null);
         }
         if (password.equals(user.getPassword())) {
-            return true; 
+            return new LoginResult(true, user);
         }
-        return false;
+        return new LoginResult(false, null);
     }
 }

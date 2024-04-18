@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.cuseCafeConnect.models.User;
+import com.example.cuseCafeConnect.models.LoginResult;
 import com.example.cuseCafeConnect.services.UserService;
 import org.springframework.web.bind.annotation.RequestParam;
-
 
 @RestController
 @RequestMapping("/api/users")
@@ -24,13 +24,13 @@ public class UserController {
     UserService userService;
 
     @GetMapping(value = "/")
-    public ResponseEntity<String> test(){
-        return new ResponseEntity<>("Hello World",HttpStatus.OK);
+    public ResponseEntity<String> test() {
+        return new ResponseEntity<>("Hello World", HttpStatus.OK);
     }
 
     @PostMapping(value = "/addUser")
-    public ResponseEntity<Object> addUser( @RequestBody User user){
-        System.out.println("--------------------\n"+user.toString());
+    public ResponseEntity<Object> addUser(@RequestBody User user) {
+        System.out.println("--------------------\n" + user.toString());
         return userService.addUser(user);
     }
 
@@ -45,13 +45,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/login")
-    public boolean verifyLogin(@RequestParam String emailId,@RequestParam String password) {
-        return userService.verifyLogin(emailId,password);
+    public LoginResult verifyLogin(@RequestParam String emailId, @RequestParam String password) {
+        return userService.verifyLogin(emailId, password);
     }
-    
-    
 
-
-
-    
 }
