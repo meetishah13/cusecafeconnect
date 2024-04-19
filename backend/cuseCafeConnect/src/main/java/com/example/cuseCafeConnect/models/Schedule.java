@@ -2,112 +2,104 @@ package com.example.cuseCafeConnect.models;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "schedule")
 public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int scheduleID;
-    private int timeSlotID;
-    private int userID;
-    private int cafeID;
-    private int isAccepted;
+    
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "timeSlotID", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private TimeSlot timeslot;
+    
+    
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "userID", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "cafeID", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private Cafe cafe;
+    
+    
+    public Schedule() {
+    	
+    }
+
+
+
+    public Schedule(int scheduleID, TimeSlot timeslot, User user, Cafe cafe, int isAccepted, String requestComments) {
+		this.scheduleID = scheduleID;
+		this.timeslot = timeslot;
+		this.user = user;
+		this.cafe = cafe;
+		this.isAccepted = isAccepted;
+		this.requestComments = requestComments;
+	}
+    
+    
+	
+
+
+	public int getScheduleID() {
+		return scheduleID;
+	}
+	public void setScheduleID(int scheduleID) {
+		this.scheduleID = scheduleID;
+	}
+	public TimeSlot getTimeslot() {
+		return timeslot;
+	}
+	public void setTimeslot(TimeSlot timeslot) {
+		this.timeslot = timeslot;
+	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public Cafe getCafe() {
+		return cafe;
+	}
+	public void setCafe(Cafe cafe) {
+		this.cafe = cafe;
+	}
+	public int getIsAccepted() {
+		return isAccepted;
+	}
+	public void setIsAccepted(int isAccepted) {
+		this.isAccepted = isAccepted;
+	}
+	public String getRequestComments() {
+		return requestComments;
+	}
+	public void setRequestComments(String requestComments) {
+		this.requestComments = requestComments;
+	}
+	private int isAccepted;
     private String requestComments;
-
-    // Constructors
-    public Schedule() {}
-
-    public Schedule(int scheduleID, int timeSlotID, int userID, int cafeID, int isAccepted, String requestComments) {
-        this.scheduleID = scheduleID;
-        this.timeSlotID = timeSlotID;
-        this.userID = userID;
-        this.cafeID = cafeID;
-        this.isAccepted = isAccepted;
-        this.requestComments = requestComments;
-    }
-
-    /**
-     * @return int return the scheduleID
-     */
-    public int getScheduleID() {
-        return scheduleID;
-    }
-
-    /**
-     * @param scheduleID the scheduleID to set
-     */
-    public void setScheduleID(int scheduleID) {
-        this.scheduleID = scheduleID;
-    }
-
-    /**
-     * @return int return the timeSlotID
-     */
-    public int getTimeSlotID() {
-        return timeSlotID;
-    }
-
-    /**
-     * @param timeSlotID the timeSlotID to set
-     */
-    public void setTimeSlotID(int timeSlotID) {
-        this.timeSlotID = timeSlotID;
-    }
-
-    /**
-     * @return int return the userID
-     */
-    public int getUserID() {
-        return userID;
-    }
-
-    /**
-     * @param userID the userID to set
-     */
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
-
-    /**
-     * @return int return the cafeID
-     */
-    public int getCafeID() {
-        return cafeID;
-    }
-
-    /**
-     * @param cafeID the cafeID to set
-     */
-    public void setCafeID(int cafeID) {
-        this.cafeID = cafeID;
-    }
-
-    /**
-     * @return int return the isAccepted
-     */
-    public int getIsAccepted() {
-        return isAccepted;
-    }
-
-    /**
-     * @param isAccepted the isAccepted to set
-     */
-    public void setIsAccepted(int isAccepted) {
-        this.isAccepted = isAccepted;
-    }
-
-    /**
-     * @return String return the requestComments
-     */
-    public String getRequestComments() {
-        return requestComments;
-    }
-
-    /**
-     * @param requestComments the requestComments to set
-     */
-    public void setRequestComments(String requestComments) {
-        this.requestComments = requestComments;
-    }
-
+    
+    @Override
+	public String toString() {
+		return "Schedule [scheduleID=" + scheduleID + ", timeslot=" + timeslot + ", user=" + user + ", cafe=" + cafe
+				+ ", isAccepted=" + isAccepted + ", requestComments=" + requestComments + "]";
+	}
 }
+
+
+
+
+

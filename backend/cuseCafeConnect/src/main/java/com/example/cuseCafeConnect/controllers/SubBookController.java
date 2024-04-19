@@ -3,6 +3,7 @@ package com.example.cuseCafeConnect.controllers;
 import com.example.cuseCafeConnect.models.SubBook;
 import com.example.cuseCafeConnect.services.SubBookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,5 +40,18 @@ public class SubBookController {
     public void deleteSubBook(@PathVariable int subID) {
         subBookService.deleteSubBook(subID);  // Or subBookRepository.deleteById(subID)
     }
+    
+    
+    
+    
+    //new methods
+
+    
+    
+    
+    
+    
+    
+    
 }
 
