@@ -1,6 +1,12 @@
 package com.example.cuseCafeConnect.models;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.LocalDateTime;
 @Entity
 @Table(name = "subBook")
@@ -10,141 +16,162 @@ public class SubBook {
     private int subID;
 
     private int subTypeID;
+    
+    
     private LocalDateTime dropDate;
-    private int dropUser;
-    private int pickUpUser;
+    
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "dropUser", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private User dropUser;
+ 
+    
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "pickUpUser", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private User pickUpUser;
+  
+    
     private int acceptSub;
-    private int cafeID;
-    private int scheduleID;
-    private String comments;
+    
+    
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "cafeID", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private Cafe cafe;
+    
+    
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "scheduleID", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private Schedule schedule;
+    
 
-    // Constructors
-    public SubBook() {}
-
-    /**
-     * @return int return the subID
-     */
-    public int getSubID() {
-        return subID;
+    @Override
+	public String toString() {
+		return "SubBook [subID=" + subID + ", subTypeID=" + subTypeID + ", dropDate=" + dropDate + ", dropUser="
+				+ dropUser + ", pickUpUser=" + pickUpUser + ", acceptSub=" + acceptSub + ", cafe=" + cafe
+				+ ", scheduleID=" + schedule + ", comments=" + comments + "]";
+	}
+    
+    
+    public SubBook(){
     }
 
-    /**
-     * @param subID the subID to set
-     */
-    public void setSubID(int subID) {
-        this.subID = subID;
-    }
 
-    /**
-     * @return int return the subTypeID
-     */
-    public int getSubTypeID() {
-        return subTypeID;
-    }
+	public SubBook(int subID, int subTypeID, LocalDateTime dropDate, User dropUser, User pickUpUser, int acceptSub,
+			Cafe cafe, Schedule schedule, String comments) {
+		super();
+		this.subID = subID;
+		this.subTypeID = subTypeID;
+		this.dropDate = dropDate;
+		this.dropUser = dropUser;
+		this.pickUpUser = pickUpUser;
+		this.acceptSub = acceptSub;
+		this.cafe = cafe;
+		this.schedule = schedule;
+		this.comments = comments;
+	}
 
-    /**
-     * @param subTypeID the subTypeID to set
-     */
-    public void setSubTypeID(int subTypeID) {
-        this.subTypeID = subTypeID;
-    }
 
-    /**
-     * @return LocalDateTime return the dropDate
-     */
-    public LocalDateTime getDropDate() {
-        return dropDate;
-    }
+	public int getSubID() {
+		return subID;
+	}
 
-    /**
-     * @param dropDate the dropDate to set
-     */
-    public void setDropDate(LocalDateTime dropDate) {
-        this.dropDate = dropDate;
-    }
 
-    /**
-     * @return int return the dropUser
-     */
-    public int getDropUser() {
-        return dropUser;
-    }
+	public void setSubID(int subID) {
+		this.subID = subID;
+	}
 
-    /**
-     * @param dropUser the dropUser to set
-     */
-    public void setDropUser(int dropUser) {
-        this.dropUser = dropUser;
-    }
 
-    /**
-     * @return int return the pickUpUser
-     */
-    public int getPickUpUser() {
-        return pickUpUser;
-    }
+	public int getSubTypeID() {
+		return subTypeID;
+	}
 
-    /**
-     * @param pickUpUser the pickUpUser to set
-     */
-    public void setPickUpUser(int pickUpUser) {
-        this.pickUpUser = pickUpUser;
-    }
 
-    /**
-     * @return int return the acceptSub
-     */
-    public int getAcceptSub() {
-        return acceptSub;
-    }
+	public void setSubTypeID(int subTypeID) {
+		this.subTypeID = subTypeID;
+	}
 
-    /**
-     * @param acceptSub the acceptSub to set
-     */
-    public void setAcceptSub(int acceptSub) {
-        this.acceptSub = acceptSub;
-    }
 
-    /**
-     * @return int return the cafeID
-     */
-    public int getCafeID() {
-        return cafeID;
-    }
+	public LocalDateTime getDropDate() {
+		return dropDate;
+	}
 
-    /**
-     * @param cafeID the cafeID to set
-     */
-    public void setCafeID(int cafeID) {
-        this.cafeID = cafeID;
-    }
 
-    /**
-     * @return int return the scheduleID
-     */
-    public int getScheduleID() {
-        return scheduleID;
-    }
+	public void setDropDate(LocalDateTime dropDate) {
+		this.dropDate = dropDate;
+	}
 
-    /**
-     * @param scheduleID the scheduleID to set
-     */
-    public void setScheduleID(int scheduleID) {
-        this.scheduleID = scheduleID;
-    }
 
-    /**
-     * @return String return the comments
-     */
-    public String getComments() {
-        return comments;
-    }
+	public User getDropUser() {
+		return dropUser;
+	}
 
-    /**
-     * @param comments the comments to set
-     */
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
 
+	public void setDropUser(User dropUser) {
+		this.dropUser = dropUser;
+	}
+
+
+	public User getPickUpUser() {
+		return pickUpUser;
+	}
+
+
+	public void setPickUpUser(User pickUpUser) {
+		this.pickUpUser = pickUpUser;
+	}
+
+
+	public int getAcceptSub() {
+		return acceptSub;
+	}
+
+
+	public void setAcceptSub(int acceptSub) {
+		this.acceptSub = acceptSub;
+	}
+
+
+	public Cafe getCafe() {
+		return cafe;
+	}
+
+
+	public void setCafe(Cafe cafe) {
+		this.cafe = cafe;
+	}
+
+
+	public Schedule getSchedule() {
+		return schedule;
+	}
+
+
+	public void setScheduleID(Schedule schedule) {
+		this.schedule = schedule;
+	}
+
+
+	public String getComments() {
+		return comments;
+	}
+
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+
+	private String comments;
+
+  
+    
+
+    
 }

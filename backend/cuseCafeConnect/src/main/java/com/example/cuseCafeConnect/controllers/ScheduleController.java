@@ -1,7 +1,11 @@
 package com.example.cuseCafeConnect.controllers;
 
+
 import com.example.cuseCafeConnect.models.Schedule;
+//import com.example.cuseCafeConnect.models.TotalShiftsInSchedule;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,4 +43,22 @@ public class ScheduleController {
     public void deleteSchedule(@PathVariable int scheduleID) {
         scheduleService.deleteSchedule(scheduleID);  // Or scheduleRepository.deleteById(scheduleID)
     }
+    
+    
+    
+    
+    
+    //new methods
+    
+   @GetMapping("/user/{userId}/shifts")
+    public ResponseEntity<Object> getUserShifts(@PathVariable int userId) {
+       
+        
+        return scheduleService.getUserScheduleById(userId);
+    }
+    
+    
+    
+    
+    
 }

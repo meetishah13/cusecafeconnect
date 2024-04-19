@@ -44,8 +44,8 @@ public class SubBookServiceImpl implements SubBookService {
         existingSubBook.setDropUser(subBook.getDropUser());
         existingSubBook.setPickUpUser(subBook.getPickUpUser());
         existingSubBook.setAcceptSub(subBook.getAcceptSub());
-        existingSubBook.setCafeID(subBook.getCafeID());
-        existingSubBook.setScheduleID(subBook.getScheduleID());
+        existingSubBook.setCafe(subBook.getCafe());
+        existingSubBook.setScheduleID(subBook.getSchedule());
         existingSubBook.setComments(subBook.getComments());
 
         return subBookRepository.save(existingSubBook);
