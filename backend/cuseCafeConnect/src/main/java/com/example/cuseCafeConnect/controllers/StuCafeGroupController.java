@@ -1,5 +1,6 @@
 package com.example.cuseCafeConnect.controllers;
 
+import com.example.cuseCafeConnect.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,8 @@ public class StuCafeGroupController {
 
     @Autowired
     StuCafeGroupService stuCafeGroupService;
-
+    @Autowired
+    UserService userService;
     @PostMapping("/add")
     public ResponseEntity<StuCafeGroup> addStuCafeGroup(@RequestBody StuCafeGroup stuCafeGroup) {
         StuCafeGroup newStuCafeGroup = stuCafeGroupService.addStuCafeGroup(stuCafeGroup);
@@ -55,6 +57,7 @@ public class StuCafeGroupController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
     @GetMapping("/cafes/{userId}")
     public ResponseEntity<List<Map<String, Object>>> getCafesByUserId(@PathVariable int userId) {
         List<Object[]> cafesData = stuCafeGroupService.getCafeIdsAndNamesForUser(userId);
@@ -62,13 +65,20 @@ public class StuCafeGroupController {
 
         for (Object[] cafeData : cafesData) {
             Map<String, Object> cafeMap = new HashMap<>();
-            cafeMap.put("cafeId", cafeData[0]);
-            cafeMap.put("cafeName", cafeData[1]);
+            int cafeId = (int) cafeData[0];
+            String cafeName = (String) cafeData[1];
+            List<String> supervisorList = userService.getSupervisorListByCafeId(cafeId);
+
+            cafeMap.put("cafeID", cafeId);
+            cafeMap.put("cafeName", cafeName);
+            cafeMap.put("supervisorList", supervisorList);
+
             cafes.add(cafeMap);
         }
 
         return new ResponseEntity<>(cafes, HttpStatus.OK);
     }
+
 
 
 }

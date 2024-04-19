@@ -1,5 +1,6 @@
 package com.example.cuseCafeConnect.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +34,10 @@ public class UserServiceImpl implements UserService {
             return new ResponseEntity<>("Error occurred while adding user: " + ex.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    @Override
+    public List<User> findByCafeIdAndRoleId(int cafeID, int roleID) {
+        return userRepository.findByCafeIDAndRoleID(cafeID, roleID);
     }
 
     @Override
@@ -77,5 +82,15 @@ public class UserServiceImpl implements UserService {
             return new LoginResult(true, user);
         }
         return new LoginResult(false, null);
+    }
+    @Override
+    public List<String> getSupervisorListByCafeId(int cafeID) {
+        List<User> supervisors = userRepository.findByCafeIDAndRoleID(cafeID, 2); // Assuming roleId 2 represents supervisors
+        List<String> supervisorNames = new ArrayList<>();
+        for (User supervisor : supervisors) {
+            String supervisorName = supervisor.getfName() + " " + supervisor.getlName();
+            supervisorNames.add(supervisorName);
+        }
+        return supervisorNames;
     }
 }

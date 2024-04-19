@@ -13,4 +13,6 @@ public interface UserService {
     ResponseEntity<Object> getUserDetailsByUserId(int userId);
     ResponseEntity<Object> updateUserDetails(User user);
     LoginResult verifyLogin(String emailId,String password);
+    List<User> findByCafeIdAndRoleId(int cafeID, int roleID);
+    List<String> getSupervisorListByCafeId(int cafeId);
 }
