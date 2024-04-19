@@ -1,8 +1,6 @@
 package com.example.cuseCafeConnect.models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "user")
@@ -17,10 +15,8 @@ public class User {
 	private int roleID;
 	private int cafeID;
 	private byte[] photoPath;
-
 	// Constructors
-	public User() {
-	}
+	public User() {}
 
 	public int getUserID() {
 		return userID;
@@ -99,7 +95,5 @@ public class User {
 		return "User [userID=" + userID + ", userEmail=" + userEmail + ", fName=" + fName + ", lName=" + lName
 				+ ", password=" + password + ", phoneNo=" + phoneNo + ", roleID=" + roleID + ", cafeID=" + cafeID + "]";
 	}
-
-
 
 }

@@ -1,10 +1,7 @@
 package com.example.cuseCafeConnect.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "cafe")
@@ -16,7 +13,6 @@ public class Cafe {
     private String cafeName;
     private String cafeLat;
     private String cafeLong;
-
     // Constructors
     public Cafe() {}
 

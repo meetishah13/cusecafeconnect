@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import com.example.cuseCafeConnect.models.StuCafeGroup;
 import com.example.cuseCafeConnect.services.StuCafeGroupService;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/stucafegroup")
 public class StuCafeGroupController {
@@ -50,4 +55,20 @@ public class StuCafeGroupController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("/cafes/{userId}")
+    public ResponseEntity<List<Map<String, Object>>> getCafesByUserId(@PathVariable int userId) {
+        List<Object[]> cafesData = stuCafeGroupService.getCafeIdsAndNamesForUser(userId);
+        List<Map<String, Object>> cafes = new ArrayList<>();
+
+        for (Object[] cafeData : cafesData) {
+            Map<String, Object> cafeMap = new HashMap<>();
+            cafeMap.put("cafeId", cafeData[0]);
+            cafeMap.put("cafeName", cafeData[1]);
+            cafes.add(cafeMap);
+        }
+
+        return new ResponseEntity<>(cafes, HttpStatus.OK);
+    }
+
+
 }

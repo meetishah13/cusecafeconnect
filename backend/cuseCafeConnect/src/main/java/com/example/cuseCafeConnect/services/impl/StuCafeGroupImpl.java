@@ -1,11 +1,14 @@
 // StuCafeGroupImpl.java
 package com.example.cuseCafeConnect.services.impl;
 
+import com.example.cuseCafeConnect.models.Cafe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.cuseCafeConnect.models.StuCafeGroup;
 import com.example.cuseCafeConnect.repositories.StuCafeGroupRepository;
 import com.example.cuseCafeConnect.services.StuCafeGroupService;
+
+import java.util.List;
 
 @Service
 public class StuCafeGroupImpl implements StuCafeGroupService {
@@ -40,5 +43,9 @@ public class StuCafeGroupImpl implements StuCafeGroupService {
         } else {
             return false;
         }
+    }
+    @Override
+    public List<Object[]> getCafeIdsAndNamesForUser(int userId) {
+        return stuCafeGroupRepository.findCafeIdAndNameByUserId(userId);
     }
 }
