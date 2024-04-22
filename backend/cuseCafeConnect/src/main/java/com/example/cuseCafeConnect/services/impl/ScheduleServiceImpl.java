@@ -1,7 +1,7 @@
 package com.example.cuseCafeConnect.services.impl;
 
 import com.example.cuseCafeConnect.models.Schedule;
-
+import com.example.cuseCafeConnect.models.ScheduleCafeDTO;
 import com.example.cuseCafeConnect.models.SubBook;
 import com.example.cuseCafeConnect.models.SubBookDetailsPOJO;
 import com.example.cuseCafeConnect.models.TotalShiftsInSchedule;
@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
@@ -101,5 +103,22 @@ public class ScheduleServiceImpl implements ScheduleService {
 
    
 }
+
+	@Override
+	public ResponseEntity<Object> getScheduleByCafeId(int cafeId) {
+		List<Object[]> sc = scheduleRepository.findScheduleByCafeId(cafeId); 
+		List<ScheduleCafeDTO> schedules = new ArrayList<>();
+		System.out.println("Length " + sc.size());
+		for(Object[] s : sc) {
+			//Map<String, Object> scheduleMap = new HashMap<>();
+			System.out.println("timeSlot " +  s[0]);
+			System.out.println("timeSlotDay " +  s[1]);
+			System.out.println("userName " +  s[2]);
+			ScheduleCafeDTO scdto = new ScheduleCafeDTO((String) s[0],(String)s[1],(String)s[2]);
+			schedules.add(scdto);
+			
+		}
+		return new ResponseEntity<>(schedules,HttpStatus.OK);
+	}
 }
 
