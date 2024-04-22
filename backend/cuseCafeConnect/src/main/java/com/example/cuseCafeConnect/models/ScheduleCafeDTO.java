@@ -5,12 +5,24 @@ import java.time.LocalDateTime;
 public class ScheduleCafeDTO {
 	
 	private int cafeID;
-	private int scheduleID;;
 	private int timeSlotId;
 	private String timeSlot;
 	private String timeSlotDay;
 	private String cafeName;
-	private int userId;
+	private String userName;
+	
+	
+	
+	public ScheduleCafeDTO(int cafeID,  int timeSlotId, String timeSlot, String timeSlotDay,
+			String cafeName, String userName) {
+		super();
+		this.cafeID = cafeID;
+		this.timeSlotId = timeSlotId;
+		this.timeSlot = timeSlot;
+		this.timeSlotDay = timeSlotDay;
+		this.cafeName = cafeName;
+		this.userName = userName;
+	}
 	
 	
 	
@@ -20,12 +32,7 @@ public class ScheduleCafeDTO {
 	public void setCafeID(int cafeID) {
 		this.cafeID = cafeID;
 	}
-	public int getScheduleID() {
-		return scheduleID;
-	}
-	public void setScheduleID(int scheduleID) {
-		this.scheduleID = scheduleID;
-	}
+	
 	public int getTimeSlotId() {
 		return timeSlotId;
 	}
@@ -35,23 +42,8 @@ public class ScheduleCafeDTO {
 	public String getTimeSlot() {
 		return timeSlot;
 	}
-	public ScheduleCafeDTO(int cafeID, int scheduleID, int timeSlotId, String timeSlot, String timeSlotDay,
-			String cafeName, int userId) {
-		super();
-		this.cafeID = cafeID;
-		this.scheduleID = scheduleID;
-		this.timeSlotId = timeSlotId;
-		this.timeSlot = timeSlot;
-		this.timeSlotDay = timeSlotDay;
-		this.cafeName = cafeName;
-		this.userId = userId;
-	}
-	@Override
-	public String toString() {
-		return "ScheduleCafeDTO [cafeID=" + cafeID + ", scheduleID=" + scheduleID + ", timeSlotId=" + timeSlotId
-				+ ", timeSlot=" + timeSlot + ", timeSlotDay=" + timeSlotDay + ", cafeName=" + cafeName + ", userId="
-				+ userId + "]";
-	}
+	
+	
 	public void setTimeSlot(String timeSlot) {
 		this.timeSlot = timeSlot;
 	}
@@ -67,12 +59,22 @@ public class ScheduleCafeDTO {
 	public void setCafeName(String cafeName) {
 		this.cafeName = cafeName;
 	}
-	public int getUserId() {
-		return userId;
+	public String userName() {
+		return userName;
 	}
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
+	
+	
+	
+	
+	@Override
+	public String toString() {
+		return "ScheduleCafeDTO [cafeID=" + cafeID + ", timeSlotId=" + timeSlotId + ", timeSlot=" + timeSlot
+				+ ", timeSlotDay=" + timeSlotDay + ", cafeName=" + cafeName + ", userName=" + userName + "]";
+	}
+	
 	
 
 }
