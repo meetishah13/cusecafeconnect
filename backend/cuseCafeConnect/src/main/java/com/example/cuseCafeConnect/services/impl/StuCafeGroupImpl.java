@@ -48,4 +48,8 @@ public class StuCafeGroupImpl implements StuCafeGroupService {
     public List<Object[]> getCafeIdsAndNamesForUser(int userId) {
         return stuCafeGroupRepository.findCafeIdAndNameByUserId(userId);
     }
+    @Override
+    public List<Object[]> findCafesUserIsNotPartOf(int userId) {
+        return stuCafeGroupRepository.findCafesUserIsNotPartOf(userId);
+    }
 }

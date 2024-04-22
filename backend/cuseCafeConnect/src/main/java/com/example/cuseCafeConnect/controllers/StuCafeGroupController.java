@@ -78,6 +78,35 @@ public class StuCafeGroupController {
 
         return new ResponseEntity<>(cafes, HttpStatus.OK);
     }
+//    @GetMapping("/cafes/notmember/{userId}")
+    private ResponseEntity<List<Map<String, Object>>> getCafesUserIsNotPartOf(@PathVariable int userId) {
+        List<Object[]> cafesData = stuCafeGroupService.findCafesUserIsNotPartOf(userId);
+        List<Map<String, Object>> cafes = new ArrayList<>();
+
+        for (Object[] cafeData : cafesData) {
+            Map<String, Object> cafeMap = new HashMap<>();
+            int cafeId = (int) cafeData[0];
+            String cafeName = (String) cafeData[1];
+            List<String> supervisorList = userService.getSupervisorListByCafeId(cafeId);
+
+            cafeMap.put("cafeID", cafeId);
+            cafeMap.put("cafeName", cafeName);
+            cafeMap.put("supervisorList", supervisorList);
+
+            cafes.add(cafeMap);
+        }
+
+        return new ResponseEntity<>(cafes, HttpStatus.OK);
+    }
+    @GetMapping("/cafes/notmember/{userId}")
+    public ResponseEntity<Map<String, List<Map<String, Object>>>> getCafes(@PathVariable int userId) {
+        Map<String, List<Map<String, Object>>> response = new HashMap<>();
+        List<Map<String, Object>> cafesByUser = getCafesByUserId(userId).getBody();
+        List<Map<String, Object>> cafesNotMember = getCafesUserIsNotPartOf(userId).getBody();
+        response.put("cafesByUser", cafesByUser);
+        response.put("cafesNotMember", cafesNotMember);
+        return ResponseEntity.ok(response);
+    }
 
 
 

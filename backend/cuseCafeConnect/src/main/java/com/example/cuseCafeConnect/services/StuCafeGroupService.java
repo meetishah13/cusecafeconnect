@@ -12,4 +12,5 @@ public interface StuCafeGroupService {
     StuCafeGroup updateStuCafeGroup(StuCafeGroup stuCafeGroup);
     boolean deleteStuCafeGroup(int stuCafeGrpID);
     List<Object[]> getCafeIdsAndNamesForUser(int userId);
+     List<Object[]> findCafesUserIsNotPartOf(int userId);
 }
