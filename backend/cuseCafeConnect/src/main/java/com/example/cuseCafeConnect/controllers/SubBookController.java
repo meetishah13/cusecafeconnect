@@ -1,12 +1,20 @@
 package com.example.cuseCafeConnect.controllers;
 
+import com.example.cuseCafeConnect.models.Cafe;
 import com.example.cuseCafeConnect.models.SubBook;
+import com.example.cuseCafeConnect.models.User;
 import com.example.cuseCafeConnect.services.SubBookService;
+import com.example.cuseCafeConnect.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/subBooks")
@@ -14,7 +22,8 @@ public class SubBookController {
 
     @Autowired
     private SubBookService subBookService;  // If using service layer
-
+    @Autowired
+    private UserService userService;
     @PostMapping
     public SubBook createSubBook(@RequestBody SubBook subBook) {
         return subBookService.createSubBook(subBook);  // Or subBookRepository.save(subBook)
@@ -40,18 +49,18 @@ public class SubBookController {
     public void deleteSubBook(@PathVariable int subID) {
         subBookService.deleteSubBook(subID);  // Or subBookRepository.deleteById(subID)
     }
-    
-    
-    
-    
-    //new methods
 
-    
-    
-    
-    
-    
-    
-    
+    @GetMapping("/filter")
+    public ResponseEntity<Object>  findSubBooksByPickUpUserIsNullOrAcceptSub() {
+
+        return subBookService.findSubBooksByPickUpUserIsNullOrAcceptSub();
+
+    }
+
+
+
+
+
+
 }
 

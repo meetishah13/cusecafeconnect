@@ -83,6 +83,11 @@ public class UserServiceImpl implements UserService {
         }
         return new LoginResult(false, null);
     }
+
+    @Override
+    public User getUserById(int userId) {
+        return userRepository.findById(userId).orElse(null);
+    }
     @Override
     public List<String> getSupervisorListByCafeId(int cafeID) {
         List<User> supervisors = userRepository.findByCafeIDAndRoleID(cafeID, 2); // Assuming roleId 2 represents supervisors
