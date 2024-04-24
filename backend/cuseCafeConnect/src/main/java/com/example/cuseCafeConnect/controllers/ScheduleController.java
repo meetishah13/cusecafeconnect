@@ -56,6 +56,13 @@ public class ScheduleController {
         
         return scheduleService.getUserScheduleById(userId);
     }
+   
+   @GetMapping("/user/{cafeId}/schedule")
+   public ResponseEntity<Object> getScheduleByCafeId(@PathVariable int cafeId) {
+      
+       
+       return scheduleService.getScheduleByCafeId(cafeId);
+   }
     
     
     
