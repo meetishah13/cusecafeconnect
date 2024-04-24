@@ -15,4 +15,5 @@ public interface UserService {
     LoginResult verifyLogin(String emailId,String password);
     List<User> findByCafeIdAndRoleId(int cafeID, int roleID);
     List<String> getSupervisorListByCafeId(int cafeId);
+    User getUserById(int userId);
 }

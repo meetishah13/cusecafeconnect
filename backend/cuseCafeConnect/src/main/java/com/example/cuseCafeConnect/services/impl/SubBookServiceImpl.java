@@ -1,13 +1,18 @@
 package com.example.cuseCafeConnect.services.impl;
 
 import com.example.cuseCafeConnect.models.SubBook;
+import com.example.cuseCafeConnect.models.SubBookSchedule;
+import com.example.cuseCafeConnect.models.User;
 import com.example.cuseCafeConnect.repositories.SubBookRepository;
 import com.example.cuseCafeConnect.services.SubBookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 public class SubBookServiceImpl implements SubBookService {
@@ -55,5 +60,24 @@ public class SubBookServiceImpl implements SubBookService {
     public void deleteSubBook(int subID) {
         subBookRepository.deleteById(subID);
     }
+
+    @Override
+    public ResponseEntity<Object> findSubBooksByPickUpUserIsNullOrAcceptSub() {
+        List<Object[]> res = subBookRepository.findSubBooksByPickUpUserIsNullOrAcceptSub();
+        List<SubBookSchedule> result = new ArrayList<>();
+        for(Object[] r : res){
+            System.out.println("Id " +r[0]);
+            System.out.println("Cafe Name " +r[1]);
+            System.out.println("Drop user Name " +r[3]);
+            System.out.println("TimeSlot " +r[7]);
+            System.out.println("Time slot day " +r[8]);
+            System.out.println("Drop Date " +r[9]);
+            SubBookSchedule s = new SubBookSchedule((int)r[0],(String)r[1],(String)r[3],(String) r[7],(String) r[8],(LocalDateTime) r[9]);
+            result.add(s);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
 }
 

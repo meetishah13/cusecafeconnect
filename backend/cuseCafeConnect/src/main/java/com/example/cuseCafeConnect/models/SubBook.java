@@ -49,9 +49,11 @@ public class SubBook {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Schedule schedule;
-    
+	private int timeSlotID;
+	private String timeSlotDay;
 
-    @Override
+
+	@Override
 	public String toString() {
 		return "SubBook [subID=" + subID + ", subTypeID=" + subTypeID + ", dropDate=" + dropDate + ", dropUser="
 				+ dropUser + ", pickUpUser=" + pickUpUser + ", acceptSub=" + acceptSub + ", cafe=" + cafe
@@ -61,6 +63,18 @@ public class SubBook {
     
     public SubBook(){
     }
+	private String timeSlot; // Define the timeSlot property
+
+	public String getTimeSlot() {
+		return timeSlot;
+	}
+
+	public void setTimeSlot(int timeSlotID, String timeSlot, String timeSlotDay) {
+		this.timeSlotID = timeSlotID;
+		this.timeSlot = timeSlot;
+		this.timeSlotDay = timeSlotDay;
+	}
+
 
 
 	public SubBook(int subID, int subTypeID, LocalDateTime dropDate, User dropUser, User pickUpUser, int acceptSub,
