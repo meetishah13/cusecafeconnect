@@ -11,46 +11,46 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "subBook")
 public class SubBook {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int subID;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int subID;
 
-    private int subTypeID;
-    
-    
-    private LocalDateTime dropDate;
-    
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "dropUser", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private User dropUser;
- 
-    
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "pickUpUser", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private User pickUpUser;
-  
-    
-    private int acceptSub;
-    
-    
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "cafeID", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private Cafe cafe;
-    
-    
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "scheduleID", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private Schedule schedule;
-	private int timeSlotID;
-	private String timeSlotDay;
+	private int subTypeID;
+
+
+	private LocalDateTime dropDate;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "dropUser", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
+	private User dropUser;
+
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = true)
+	@JoinColumn(name = "pickUpUser", nullable = true)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
+	private User pickUpUser;
+
+
+	private int acceptSub;
+
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "cafeID", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
+	private Cafe cafe;
+
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "scheduleID", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	@JsonIgnore
+	private Schedule schedule;
+	//private int timeSlotID;
+	//private String timeSlotDay;
 
 
 	@Override
@@ -59,26 +59,15 @@ public class SubBook {
 				+ dropUser + ", pickUpUser=" + pickUpUser + ", acceptSub=" + acceptSub + ", cafe=" + cafe
 				+ ", scheduleID=" + schedule + ", comments=" + comments + "]";
 	}
-    
-    
-    public SubBook(){
-    }
-	private String timeSlot; // Define the timeSlot property
 
-	public String getTimeSlot() {
-		return timeSlot;
-	}
 
-	public void setTimeSlot(int timeSlotID, String timeSlot, String timeSlotDay) {
-		this.timeSlotID = timeSlotID;
-		this.timeSlot = timeSlot;
-		this.timeSlotDay = timeSlotDay;
+	public SubBook(){
 	}
 
 
 
 	public SubBook(int subID, int subTypeID, LocalDateTime dropDate, User dropUser, User pickUpUser, int acceptSub,
-			Cafe cafe, Schedule schedule, String comments) {
+				   Cafe cafe, Schedule schedule, String comments) {
 		super();
 		this.subID = subID;
 		this.subTypeID = subTypeID;
@@ -184,8 +173,8 @@ public class SubBook {
 
 	private String comments;
 
-  
-    
 
-    
+
+
+
 }

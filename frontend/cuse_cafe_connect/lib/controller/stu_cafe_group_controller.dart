@@ -1,0 +1,23 @@
+// controller.dart
+import 'package:cuse_cafe_connect/model/time_slot_model.dart';
+
+import '../model/stu_cafe_group.dart';
+import '../service/api_service.dart';
+
+class StuCafeGroupController {
+  final APIService _service = APIService();
+
+  Future<Map<String, List<StuCafeGroup>>> fetchCafes(String device, String userId) async {
+    String url = "/stucafegroup/cafes/notmember/$userId";
+    String localhost = (device=='ios')? 'localhost':'10.0.2.2';
+
+    return await _service.fetchCafes(localhost,url);
+  }
+  Future<List<TimeSlot>> fetchTimeSlotsByCafeId(String device, int cafeId) async {
+
+    String url = "/timeslots/availableByCafe/";
+    String localhost = (device=='ios')? 'localhost':'10.0.2.2';
+
+    return await _service.fetchTimeSlotsByCafeId(localhost,url,cafeId);
+  }
+}

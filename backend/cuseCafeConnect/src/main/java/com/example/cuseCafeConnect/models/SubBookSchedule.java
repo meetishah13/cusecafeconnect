@@ -9,20 +9,30 @@ public class SubBookSchedule {
     private String timeSlot;
     private String timeSlotDay;
     private LocalDateTime dropDate;
+    private String status;
+    private String pickUpUserName;
+    private String comments;
 
     // Parameterized constructor
-    public SubBookSchedule(int subId, String cafeName, String dropUserName, String timeSlot, String timeSlotDay, LocalDateTime dropDate) {
+    public SubBookSchedule(int subId, String cafeName, String dropUserName, String timeSlot, String timeSlotDay, LocalDateTime dropDate,String status,String pickUpUserName,String comments) {
         this.subId = subId;
         this.cafeName = cafeName;
         this.dropUserName = dropUserName;
         this.timeSlot = timeSlot;
         this.timeSlotDay = timeSlotDay;
         this.dropDate = dropDate;
+        this.status = status;
+        this.pickUpUserName = pickUpUserName;
+        this.comments = comments;
     }
 
     // Getter and Setter methods
     public int getSubId() {
         return subId;
+    }
+
+    public String getComments() {
+        return comments;
     }
 
     public void setSubId(int subId) {
@@ -43,6 +53,14 @@ public class SubBookSchedule {
 
     public void setDropUserName(String dropUserName) {
         this.dropUserName = dropUserName;
+    }
+
+    public String getPickUpUserName() {
+        return pickUpUserName;
+    }
+
+    public void setPickUpUserName(String pickUpUserName) {
+        this.pickUpUserName = pickUpUserName;
     }
 
     public String getTimeSlot() {
@@ -69,6 +87,10 @@ public class SubBookSchedule {
         this.dropDate = dropDate;
     }
 
+    public void setComments(String comments){
+        this.comments = comments;
+    }
+
     // toString method
     @Override
     public String toString() {
@@ -80,5 +102,13 @@ public class SubBookSchedule {
                 ", timeSlotDay='" + timeSlotDay + '\'' +
                 ", dropDate=" + dropDate +
                 '}';
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

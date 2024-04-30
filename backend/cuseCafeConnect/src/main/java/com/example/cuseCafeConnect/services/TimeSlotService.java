@@ -9,4 +9,5 @@ public interface TimeSlotService {
     TimeSlot saveTimeSlot(TimeSlot timeSlot);
     TimeSlot updateTimeSlot(int id, TimeSlot timeSlot);
     void deleteTimeSlot(int id);
+    List<Object[]>getAvailableTimeSlotIdsByCafeId(int cafeId);
 }

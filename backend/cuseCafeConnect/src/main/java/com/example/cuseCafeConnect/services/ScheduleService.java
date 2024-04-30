@@ -15,5 +15,4 @@ public interface ScheduleService {
     void deleteSchedule(int scheduleID);
 	ResponseEntity<Object> getUserScheduleById(int userId);
 	ResponseEntity<Object> getScheduleByCafeId(int cafeId);
-    
 }

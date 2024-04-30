@@ -15,7 +15,7 @@ public class Cafe {
     private String cafeLong;
     // Constructors
     public Cafe() {}
-
+    public Cafe(int cafeID ) {this.cafeID = cafeID;}
     public Cafe(int cafeID, String cafeName, String cafeLat, String cafeLong) {
         this.cafeID = cafeID;
         this.cafeName = cafeName;

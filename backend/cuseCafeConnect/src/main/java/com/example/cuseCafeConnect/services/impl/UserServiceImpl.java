@@ -14,6 +14,7 @@ import com.example.cuseCafeConnect.models.User;
 import com.example.cuseCafeConnect.models.LoginResult;
 import com.example.cuseCafeConnect.repositories.UserRepository;
 import com.example.cuseCafeConnect.services.UserService;
+import java.util.Base64;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<Object> addUser(User user) {
+        System.out.println("User name while inserting " + user.getfName());
         try {
             if (userRepository.existsById(user.getUserID())) {
                 return new ResponseEntity<>("User with the same userID already exists", HttpStatus.CONFLICT);
@@ -35,6 +37,7 @@ public class UserServiceImpl implements UserService {
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @Override
     public List<User> findByCafeIdAndRoleId(int cafeID, int roleID) {
         return userRepository.findByCafeIDAndRoleID(cafeID, roleID);
@@ -59,18 +62,19 @@ public class UserServiceImpl implements UserService {
             existingUser.setUserEmail(user.getUserEmail());
             existingUser.setfName(user.getfName());
             existingUser.setlName(user.getlName());
-            existingUser.setPassword(user.getPassword());
             existingUser.setPhoneNo(user.getPhoneNo());
-            existingUser.setRoleID(user.getRoleID());
-            existingUser.setCafeID(user.getCafeID());
-            existingUser.setPhotoPath(user.getPhotoPath());
+            System.out.println("Base64 image at server side " + user.getPhotoPath());
+            if (user.getPhotoPath() != null && user.getPhotoPath().length > 0) {
+                existingUser.setPhotoPath(user.getPhotoPath());
+            }
             User updatedUser = userRepository.save(existingUser);
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         } else {
-
             return new ResponseEntity<>("User with the given userID not found", HttpStatus.NOT_FOUND);
         }
     }
+
+
 
     @Override
     public LoginResult verifyLogin(String emailId, String password) {
@@ -88,9 +92,11 @@ public class UserServiceImpl implements UserService {
     public User getUserById(int userId) {
         return userRepository.findById(userId).orElse(null);
     }
+
     @Override
     public List<String> getSupervisorListByCafeId(int cafeID) {
-        List<User> supervisors = userRepository.findByCafeIDAndRoleID(cafeID, 2); // Assuming roleId 2 represents supervisors
+        List<User> supervisors = userRepository.findByCafeIDAndRoleID(cafeID, 2); // Assuming roleId 2 represents
+        // supervisors
         List<String> supervisorNames = new ArrayList<>();
         for (User supervisor : supervisors) {
             String supervisorName = supervisor.getfName() + " " + supervisor.getlName();

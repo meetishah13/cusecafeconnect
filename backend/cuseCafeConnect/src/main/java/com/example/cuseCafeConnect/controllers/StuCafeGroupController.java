@@ -68,10 +68,13 @@ public class StuCafeGroupController {
             int cafeId = (int) cafeData[0];
             String cafeName = (String) cafeData[1];
             List<String> supervisorList = userService.getSupervisorListByCafeId(cafeId);
-
+            String cafeLatitude = (String) cafeData[2];
+            String cafeLongitude = (String) cafeData[3];
             cafeMap.put("cafeID", cafeId);
             cafeMap.put("cafeName", cafeName);
             cafeMap.put("supervisorList", supervisorList);
+            cafeMap.put("cafeLatitude", cafeLatitude);
+            cafeMap.put("cafeLongitude", cafeLongitude);
 
             cafes.add(cafeMap);
         }
@@ -88,10 +91,15 @@ public class StuCafeGroupController {
             int cafeId = (int) cafeData[0];
             String cafeName = (String) cafeData[1];
             List<String> supervisorList = userService.getSupervisorListByCafeId(cafeId);
+            String cafeLatitude = (String) cafeData[2];
+            String cafeLongitude = (String) cafeData[3];
 
             cafeMap.put("cafeID", cafeId);
             cafeMap.put("cafeName", cafeName);
             cafeMap.put("supervisorList", supervisorList);
+            cafeMap.put("cafeLatitude", cafeLatitude);
+            cafeMap.put("cafeLongitude", cafeLongitude);
+
 
             cafes.add(cafeMap);
         }

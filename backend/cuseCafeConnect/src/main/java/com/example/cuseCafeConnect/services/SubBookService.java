@@ -13,6 +13,10 @@ public interface SubBookService {
     List<SubBook> getAllSubBooks();
     SubBook updateSubBook(SubBook subBook);
     void deleteSubBook(int subID);
-    ResponseEntity<Object> findSubBooksByPickUpUserIsNullOrAcceptSub();
+    ResponseEntity<Object> findSubBooksByPickUpUserIsNullOrAcceptSub(int userId);
+    ResponseEntity<Object> requestForSub(int subId,int userId);
+    ResponseEntity<Object> getRequestedSubByUserId(int userId);
+    ResponseEntity<Object> getSubBookSchedule(int userId);
+    ResponseEntity<Object> updateSubStatus(int subId,int status,String message);
 
 }

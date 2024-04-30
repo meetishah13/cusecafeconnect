@@ -53,4 +53,14 @@ public class TimeSlotController {
         timeSlotService.deleteTimeSlot(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
+    @GetMapping("/availableByCafe/{cafeId}")
+    public ResponseEntity<List<Object[]>> getAvailableTimeSlotIdsByCafeId(@PathVariable int cafeId) {
+        List<Object[]> availableTimeSlotIds = timeSlotService.getAvailableTimeSlotIdsByCafeId(cafeId);
+//        System.out.print(availableTimeSlotIds);
+        return new ResponseEntity<>(availableTimeSlotIds, HttpStatus.OK);
+    }
+
+
 }

@@ -1,5 +1,7 @@
 package com.example.cuseCafeConnect.controllers;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.cuseCafeConnect.models.User;
 import com.example.cuseCafeConnect.models.LoginResult;
@@ -40,8 +43,29 @@ public class UserController {
     }
 
     @PutMapping("/editUser")
-    public ResponseEntity<Object> updateUserDetails(@RequestBody User user) {
+    public ResponseEntity<Object> updateUserDetails(@RequestParam("userID") int userID,
+                                                    @RequestParam("userEmail") String userEmail,
+                                                    @RequestParam("fName") String fName,
+                                                    @RequestParam("lName") String lName,
+                                                    @RequestParam("phoneNo") String phoneNo,
+                                                    @RequestParam(value = "photoPath", required = false) MultipartFile photoPath) {
+        User user = new User();
+        user.setUserID(userID);
+        user.setUserEmail(userEmail);
+        user.setfName(fName);
+        user.setlName(lName);
+        user.setPhoneNo(phoneNo);
+
+        if (photoPath != null && !photoPath.isEmpty()) {
+            try {
+                user.setPhotoPath(photoPath.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return new ResponseEntity<>("Failed to process photoPath: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
         return userService.updateUserDetails(user);
+
     }
 
     @GetMapping(value = "/login")

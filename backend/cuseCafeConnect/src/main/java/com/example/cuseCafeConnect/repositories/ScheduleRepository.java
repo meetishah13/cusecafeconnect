@@ -26,6 +26,25 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 	@Query(value="SELECT ts.timeSlot, ts.timeSlotDay, CONCAT(u.fname, ' ', u.lname) AS userName FROM timeSlot ts LEFT JOIN schedule s ON ts.timeSlotID = s.timeSlotID AND s.cafeID = ?1 and s.isAccepted = 1 LEFT JOIN user u ON s.userID = u.userID",nativeQuery= true)
 	List<Object[]> findScheduleByCafeId(int cafeId);
 
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	@Query(value = "INSERT INTO schedule (timeSlotID, userID, cafeID, isAccepted, requestComments) " +
+			"VALUES (:timeSlotID, :userID, :cafeID, 0, :requestComments)", nativeQuery = true)
+	void insertSchedule(@Param("timeSlotID") int timeSlotID,
+						@Param("userID") int userID,
+						@Param("cafeID") int cafeID,
+						@Param("requestComments") String requestComments);
 	
 }

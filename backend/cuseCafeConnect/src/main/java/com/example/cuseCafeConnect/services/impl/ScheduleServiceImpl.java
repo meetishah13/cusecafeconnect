@@ -1,12 +1,10 @@
 package com.example.cuseCafeConnect.services.impl;
 
-import com.example.cuseCafeConnect.models.Schedule;
-import com.example.cuseCafeConnect.models.ScheduleCafeDTO;
-import com.example.cuseCafeConnect.models.SubBook;
-import com.example.cuseCafeConnect.models.SubBookDetailsPOJO;
-import com.example.cuseCafeConnect.models.TotalShiftsInSchedule;
-import com.example.cuseCafeConnect.models.UserSchedulePojo;
+import com.example.cuseCafeConnect.models.*;
+import com.example.cuseCafeConnect.repositories.CafeRepository;
 import com.example.cuseCafeConnect.repositories.ScheduleRepository;
+import com.example.cuseCafeConnect.repositories.SubBookRepository;
+import com.example.cuseCafeConnect.repositories.UserRepository;
 import com.example.cuseCafeConnect.services.ScheduleService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,5 +118,48 @@ public class ScheduleServiceImpl implements ScheduleService {
 		}
 		return new ResponseEntity<>(schedules,HttpStatus.OK);
 	}
+	@Service
+	public class DropShiftService {
+
+		@Autowired
+		private SubBookRepository subBookRepository;
+
+		@Autowired
+		private UserRepository userRepository;
+
+		@Autowired
+		private CafeRepository cafeRepository;
+
+		@Autowired
+		private ScheduleRepository scheduleRepository;
+
+		public void dropShift(DropShiftRequest request) {
+			User dropUser = userRepository.findById(request.getUserId())
+					.orElseThrow(() -> new RuntimeException("User not found"));
+
+			Cafe cafe = cafeRepository.findById(request.getCafeId())
+					.orElseThrow(() -> new RuntimeException("Cafe not found"));
+
+			Schedule schedule = scheduleRepository.findById(request.getScheduleId())
+					.orElseThrow(() -> new RuntimeException("Schedule not found"));
+
+			SubBook subBook = new SubBook();
+			subBook.setSubTypeID(request.getSubTypeId());
+			subBook.setDropDate(request.getDropDate());
+			subBook.setPickUpUser(null);
+			subBook.setDropUser(dropUser);
+			subBook.setAcceptSub(request.getIsAccepted());
+			subBook.setCafe(cafe);
+			subBook.setScheduleID(schedule);
+			subBook.setComments(request.getComments());
+
+			subBookRepository.save(subBook);
+		}
+	}
+
+
+
+
 }
+
 

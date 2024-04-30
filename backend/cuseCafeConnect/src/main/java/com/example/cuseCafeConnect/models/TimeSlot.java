@@ -18,6 +18,9 @@ public class TimeSlot {
 
 	    // Constructors
 	    public TimeSlot() {}
+		public TimeSlot(int timeSlotID) {
+			this.timeSlotID = timeSlotID;
+		}
 
 		public int getTimeSlotID() {
 			return timeSlotID;

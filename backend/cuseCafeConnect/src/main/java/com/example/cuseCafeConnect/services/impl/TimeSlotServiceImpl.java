@@ -45,4 +45,10 @@ public class TimeSlotServiceImpl implements TimeSlotService {
     public void deleteTimeSlot(int id) {
         timeSlotRepository.deleteById(id);
     }
+
+
+    @Override
+    public List<Object[]> getAvailableTimeSlotIdsByCafeId(int cafeId) {
+        return timeSlotRepository.findAvailableScheduleByCafeId(cafeId);
+    }
 }
