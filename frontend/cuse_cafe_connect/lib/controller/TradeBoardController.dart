@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cuse_cafe_connect/model/TradeBoardModel.dart';
-import 'package:cuse_cafe_connect/service/TradeBoardService.dart';
+import '../model/TradeBoardModel.dart';
+import '../service/TradeBoardService.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TradeBoardController {
@@ -20,11 +20,11 @@ class TradeBoardController {
     return await tbs.fetchManagerSubBook(userId);
   }
 
-  Future<bool> requestForSub(int subId, int userId) async{
+  Future<bool> requestForSub(int subId, int userId) async {
     return tbs.requestForSub(subId, userId);
   }
 
-  Future<bool> updateSubStatus(int subId, int status, String message) async{
+  Future<bool> updateSubStatus(int subId, int status, String message) async {
     return tbs.updateSubStatus(subId, status, message);
   }
 
@@ -33,6 +33,4 @@ class TradeBoardController {
     int userId = prefs.getInt('userId') ?? 6348;
     return userId;
   }
-
-
 }

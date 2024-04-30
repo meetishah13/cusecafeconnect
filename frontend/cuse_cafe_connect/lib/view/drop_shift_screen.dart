@@ -95,7 +95,7 @@ class _DropShiftScreenState extends State<DropShiftScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset('assets/team-work.png', height: 130), // Image
+            Image.asset('assets/calendarimage.png', height: 130), // Image
             SizedBox(height: 100), // Gap
             Text('Cafe Name: ${widget.schedule.cafeName}'),
             Text('Time Slot: ${widget.schedule.timeSlot}'),

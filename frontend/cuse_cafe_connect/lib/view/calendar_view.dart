@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cuse_cafe_connect/model/DroppedShift.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -31,13 +33,27 @@ class _CalendarViewState extends State<CalendarView> {
     _loadData();
   }
 
+  // _loadData() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   userId = (prefs.getInt('userId') ?? 6348).toString();
+  //   _fetchSchedules(userId);
+  //   // Other initialization logic can go here
+  // }
+
+  //shared pref
   _loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String userId = (prefs.getInt('userId') ?? 6348).toString();
+    userId = (prefs.getInt('userId') ?? 6348).toString();
     _fetchSchedules(userId);
-    // Other initialization logic can go here
-  }
 
+    // Retrieve dropped shifts from shared preferences
+    List<String>? droppedShiftsJson = prefs.getStringList('droppedShifts');
+    if (droppedShiftsJson != null) {
+      _droppedShifts = droppedShiftsJson
+          .map((shiftJson) => DroppedShift.fromJson(jsonDecode(shiftJson)))
+          .toList();
+    }
+  }
 
   Future<void> _fetchSchedules(String userId) async {
     try {
@@ -119,6 +135,7 @@ class _CalendarViewState extends State<CalendarView> {
   }
 
   Schedule? _selectedSchedule;
+
   void _handleDropShift(Schedule schedule) async {
     final scheduleId = schedule.scheduleId;
     final cafeId = schedule.cafeId;
@@ -155,16 +172,39 @@ class _CalendarViewState extends State<CalendarView> {
             cafeName: cafeName,
             isAccepted: isAccepted,
             ////dropped shift check
-            onDropShiftSuccess: (scheduleId, selectedDay) {
+            onDropShiftSuccess: (scheduleId, selectedDay) async {
               setState(() {
                 _droppedShifts.add(DroppedShift(
                   scheduleId: scheduleId,
                   selectedDay: selectedDay,
                 ));
               });
+              //shred pref
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              List<String> droppedShiftsJson = _droppedShifts
+                  .map(_droppedShiftToJson)
+                  .map((json) => jsonEncode(json))
+                  .toList();
+              await prefs.setStringList('droppedShifts', droppedShiftsJson);
             }),
       ),
     );
+  }
+
+//shared pref
+  Map<String, dynamic> _droppedShiftToJson(DroppedShift droppedShift) {
+    return {
+      'scheduleId': droppedShift.scheduleId,
+      'selectedDay': droppedShift.selectedDay.toIso8601String(),
+    };
+  }
+
+  Future<void> _clearDroppedShifts() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('droppedShifts');
+    setState(() {
+      _droppedShifts.clear();
+    });
   }
 
   @override
