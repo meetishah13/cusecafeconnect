@@ -32,8 +32,8 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My App'),
-      ),
+          //title: Text('My App'),
+          ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -58,8 +58,10 @@ class _MainScreenState extends State<MainScreen> {
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
-        unselectedItemColor: Colors.grey, // Optional: Set the color for unselected items
-        type: BottomNavigationBarType.fixed, // This will make the icons visible all the time
+        unselectedItemColor:
+            Colors.grey, // Optional: Set the color for unselected items
+        type: BottomNavigationBarType
+            .fixed, // This will make the icons visible all the time
         onTap: _onItemTapped,
       ),
     );

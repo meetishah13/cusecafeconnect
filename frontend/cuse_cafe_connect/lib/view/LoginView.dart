@@ -1,4 +1,5 @@
 import 'package:cuse_cafe_connect/controller/UserController.dart';
+import 'package:cuse_cafe_connect/view/SignUpView.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatelessWidget {
@@ -7,30 +8,113 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login Page'),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(20.0),
+      appBar: AppBar(),
+      body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
-              controller: controller.usernameController,
-              decoration: InputDecoration(labelText: 'Email'),
+            SizedBox(height: 2), // Add some spacing at the top
+            Center(
+              child: Image.asset(
+                'assets/login_image.png', // Replace with your image path
+                height: 300, // Adjust the height as needed
+              ),
             ),
-            SizedBox(height: 20.0),
-            TextField(
-              controller: controller.passwordController,
-              obscureText: true,
-              decoration: InputDecoration(labelText: 'Password'),
-            ),
-            SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: () {
-                controller.loginUser(context);
-              },
-              child: Text('Login'),
+            SizedBox(
+                height: 20), // Add spacing between the image and the fields
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: TextField(
+                      controller: controller.usernameController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Email',
+                        alignLabelWithHint: true,
+                        contentPadding: EdgeInsets.only(left: 16),
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: TextField(
+                      controller: controller.passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Password',
+                        alignLabelWithHint: true,
+                        contentPadding: EdgeInsets.only(left: 16),
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                  SizedBox(height: 60.0),
+                  ElevatedButton(
+                    onPressed: () {
+                      controller.loginUser(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Login',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 100.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'No Account? ',
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUpView()),
+                          );
+                        },
+                        child: Text(
+                          'Sign up here',
+                          style: TextStyle(
+                            color: Colors.orange,
+                            //decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),

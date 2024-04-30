@@ -77,6 +77,10 @@ flutter:
   uses-material-design: true
   assets:
     - assets/calendarimage.png
+    - assets/entry.jpeg
+    - assets/splash_back.png
+    - assets/splash_front.png
+    - assets/login_image.png
   
   
 
