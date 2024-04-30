@@ -16,7 +16,7 @@ class _SignUpViewState extends State<SignUpView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Signup Page'),
+        title: Text('Please Fill in the Details'),
       ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
@@ -76,12 +76,22 @@ class _SignUpViewState extends State<SignUpView> {
                 } else {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => LoginView()),
+                    MaterialPageRoute(builder: (context) => LoginView()),
                   );
                 }
               },
-              child: Text('Sign Up'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orange,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+              child: Text(
+                'Sign Up',
+                style: TextStyle(
+                  color: Colors.white, // Set the text color to white
+                ),
+              ),
             ),
           ],
         ),

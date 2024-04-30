@@ -386,6 +386,23 @@ class _CalendarViewState extends State<CalendarView> {
                       },
                     ),
                   ),
+                if (_droppedShifts.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ElevatedButton(
+                      onPressed: _clearDroppedShifts,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            Colors.orange, // Set button color to orange
+                      ),
+                      child: Text(
+                        'Clear Dropped Shifts',
+                        style: TextStyle(
+                          color: Colors.white, // Set text color to white
+                        ),
+                      ),
+                    ),
+                  ),
               ],
             )
           : const Center(

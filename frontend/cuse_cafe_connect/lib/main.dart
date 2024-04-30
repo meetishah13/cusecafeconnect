@@ -1,5 +1,6 @@
 import 'package:cuse_cafe_connect/view/LoginView.dart';
 import 'package:cuse_cafe_connect/view/main_screen.dart';
+import 'package:cuse_cafe_connect/view/splash_screen.dart';
 import 'package:cuse_cafe_connect/view/stu_cafe_group_view.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginView(),
+      home: SplashScreen(),
     );
   }
 }
