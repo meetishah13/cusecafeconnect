@@ -43,11 +43,12 @@ class _StuCafeGroupViewState extends State<StuCafeGroupView> {
           } else if (snapshot.hasData) {
             Map<String, List<StuCafeGroup>> data = snapshot.data!;
             return DefaultTabController(
-              length: 2,
+              length: 3,
               child: Scaffold(
                 appBar: TabBar(
                   tabs: [
                     Tab(text: 'User Groups'),
+                    Tab(text: 'Requested Groups'),
                     Tab(text: 'Join Groups'),
                   ],
                 ),
@@ -59,6 +60,19 @@ class _StuCafeGroupViewState extends State<StuCafeGroupView> {
                         itemCount: data['cafesByUser']!.length,
                         itemBuilder: (context, index) {
                           StuCafeGroup cafe = data['cafesByUser']![index];
+                          return GestureDetector(
+                            onTap: () {
+                              // Handle card click for 'Cafes by User'
+                            },
+                            child: _buildCafeCard(cafe),
+                          );
+                        },
+                      ),
+                    if (data.containsKey('requestedCafe'))
+                      ListView.builder(
+                        itemCount: data['requestedCafe']!.length,
+                        itemBuilder: (context, index) {
+                          StuCafeGroup cafe = data['requestedCafe']![index];
                           return GestureDetector(
                             onTap: () {
                               // Handle card click for 'Cafes by User'
@@ -80,6 +94,7 @@ class _StuCafeGroupViewState extends State<StuCafeGroupView> {
                           );
                         },
                       ),
+
                   ],
                 ),
               ),
@@ -97,7 +112,6 @@ class _StuCafeGroupViewState extends State<StuCafeGroupView> {
     String deviceType = getDeviceType();
     return _controller.fetchCafes(deviceType, userId);
   }
-
 
   Widget _buildCafeCard(StuCafeGroup cafe) {
     return Card(
@@ -159,7 +173,9 @@ class _StuCafeGroupViewState extends State<StuCafeGroupView> {
             top: 10.0,
             right: 8.0,
             child: GestureDetector(
-              onTap: () {
+              onTap: cafe.isAccepted == 2
+                  ? null // Disable tap if isAccepted is 2
+                  : () {
                 showDialog(
                   context: context,
                   builder: (context) {
@@ -167,9 +183,19 @@ class _StuCafeGroupViewState extends State<StuCafeGroupView> {
                       child: AddShiftsView(cafeID: cafe.cafeID),
                     );
                   },
-                );
+                ).then((value) {
+                  if (value == true) {
+                    // Reload the page if the dialog is closed with success status
+                    setState(() {});
+                  }
+                });
               },
-              child: Container(
+              child: cafe.isAccepted == 2
+                  ? Icon(
+                Icons.cancel,
+                color: Colors.red,
+              )
+                  : Container(
                 padding: EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   color: Color(0xFF040261),
@@ -189,6 +215,101 @@ class _StuCafeGroupViewState extends State<StuCafeGroupView> {
       ),
     );
   }
+  // Widget _buildCafeCard(StuCafeGroup cafe) {
+  //   return Card(
+  //     elevation: 4.0,
+  //     margin: EdgeInsets.all(8.0),
+  //     shape: RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.circular(10.0),
+  //     ),
+  //     child: Stack(
+  //       children: [
+  //         Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Padding(
+  //               padding: const EdgeInsets.all(12.0),
+  //               child: Text(
+  //                 cafe.cafeName,
+  //                 style: TextStyle(
+  //                   fontSize: 20,
+  //                   fontWeight: FontWeight.bold,
+  //                   color: Color(0xFF040261),
+  //                 ),
+  //               ),
+  //             ),
+  //             SizedBox(
+  //               height: 200,
+  //               child: GoogleMap(
+  //                 initialCameraPosition: CameraPosition(
+  //                   target: LatLng(
+  //                     cafe.latitude,
+  //                     cafe.longitude,
+  //                   ),
+  //                   zoom: 15,
+  //                 ),
+  //                 markers: {
+  //                   Marker(
+  //                     markerId: MarkerId(cafe.cafeName),
+  //                     position: LatLng(
+  //                       cafe.latitude,
+  //                       cafe.longitude,
+  //                     ),
+  //                   ),
+  //                 },
+  //               ),
+  //             ),
+  //             Padding(
+  //               padding: const EdgeInsets.all(12.0),
+  //               child: Text(
+  //                 'Supervisors: ${cafe.supervisorList.join(', ')}',
+  //                 style: TextStyle(
+  //                   fontSize: 16,
+  //                   color: Color(0xFF040261),
+  //                 ),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //         Positioned(
+  //           top: 10.0,
+  //           right: 8.0,
+  //           child: GestureDetector(
+  //             onTap: () {
+  //               showDialog(
+  //                 context: context,
+  //                 builder: (context) {
+  //                   return Dialog(
+  //                     child: AddShiftsView(cafeID: cafe.cafeID),
+  //                   );
+  //                 },
+  //               ).then((value) {
+  //                 if (value == true) {
+  //                   // Reload the page if the dialog is closed with success status
+  //                   setState(() {});
+  //                 }
+  //               });
+  //             },
+  //             child: Container(
+  //               padding: EdgeInsets.all(8.0),
+  //               decoration: BoxDecoration(
+  //                 color: Color(0xFF040261),
+  //                 borderRadius: BorderRadius.circular(5.0),
+  //               ),
+  //               child: Text(
+  //                 'Add',
+  //                 style: TextStyle(
+  //                   color: Colors.white,
+  //                   fontWeight: FontWeight.bold,
+  //                 ),
+  //               ),
+  //             ),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   String getDeviceType() {
     if (Platform.isIOS) {

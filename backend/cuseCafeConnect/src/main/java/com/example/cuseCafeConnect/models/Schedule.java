@@ -7,6 +7,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.sql.Time;
+
 @Entity
 @Table(name = "schedule")
 public class Schedule {
@@ -48,9 +50,14 @@ public class Schedule {
 		this.isAccepted = isAccepted;
 		this.requestComments = requestComments;
 	}
-    
-    
-	
+
+	public Schedule (TimeSlot timeslot, User user, Cafe cafe, int isAccepted, String requestComments) {
+		this.timeslot = timeslot;
+		this.user = user;
+		this.cafe = cafe;
+		this.isAccepted = isAccepted;
+		this.requestComments = requestComments;
+	}
 
 
 	public int getScheduleID() {

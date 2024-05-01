@@ -1,5 +1,7 @@
 package com.example.cuseCafeConnect.controllers;
 
+import com.example.cuseCafeConnect.repositories.StuCafeGroupRepository;
+import com.example.cuseCafeConnect.services.ScheduleService;
 import com.example.cuseCafeConnect.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +23,12 @@ public class StuCafeGroupController {
     @Autowired
     StuCafeGroupService stuCafeGroupService;
     @Autowired
+    ScheduleService scheduleService;
+    @Autowired
     UserService userService;
+    @Autowired
+    private StuCafeGroupRepository stuCafeGroupRepository;
+
     @PostMapping("/add")
     public ResponseEntity<StuCafeGroup> addStuCafeGroup(@RequestBody StuCafeGroup stuCafeGroup) {
         StuCafeGroup newStuCafeGroup = stuCafeGroupService.addStuCafeGroup(stuCafeGroup);
@@ -94,12 +101,37 @@ public class StuCafeGroupController {
             String cafeLatitude = (String) cafeData[2];
             String cafeLongitude = (String) cafeData[3];
 
+
             cafeMap.put("cafeID", cafeId);
             cafeMap.put("cafeName", cafeName);
             cafeMap.put("supervisorList", supervisorList);
             cafeMap.put("cafeLatitude", cafeLatitude);
             cafeMap.put("cafeLongitude", cafeLongitude);
 
+            cafes.add(cafeMap);
+        }
+
+        return new ResponseEntity<>(cafes, HttpStatus.OK);
+    }
+    private ResponseEntity<List<Map<String, Object>>> getRequestedCafesByUserId(@PathVariable int userId) {
+        List<Object[]> cafesData = stuCafeGroupService.getRequestedCafeIdsAndNamesForUser(userId);
+        List<Map<String, Object>> cafes = new ArrayList<>();
+
+        for (Object[] cafeData : cafesData) {
+            Map<String, Object> cafeMap = new HashMap<>();
+            int cafeId = (int) cafeData[0];
+            String cafeName = (String) cafeData[1];
+            List<String> supervisorList = userService.getSupervisorListByCafeId(cafeId);
+            String cafeLatitude = (String) cafeData[2];
+            String cafeLongitude = (String) cafeData[3];
+            int isAccepted = (int) cafeData[4];
+
+            cafeMap.put("cafeID", cafeId);
+            cafeMap.put("cafeName", cafeName);
+            cafeMap.put("supervisorList", supervisorList);
+            cafeMap.put("cafeLatitude", cafeLatitude);
+            cafeMap.put("cafeLongitude", cafeLongitude);
+            cafeMap.put("isAccepted", isAccepted);
 
             cafes.add(cafeMap);
         }
@@ -111,11 +143,29 @@ public class StuCafeGroupController {
         Map<String, List<Map<String, Object>>> response = new HashMap<>();
         List<Map<String, Object>> cafesByUser = getCafesByUserId(userId).getBody();
         List<Map<String, Object>> cafesNotMember = getCafesUserIsNotPartOf(userId).getBody();
+        List<Map<String, Object>> requestedByUser = getRequestedCafesByUserId(userId).getBody();
         response.put("cafesByUser", cafesByUser);
+        response.put("requestedByUser", requestedByUser);
         response.put("cafesNotMember", cafesNotMember);
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/requestForShift/{userId}/{cafeId}/{timeSlotId}/{comments}")
+    public ResponseEntity<Object> requestForShift(@PathVariable int userId,@PathVariable int cafeId,@PathVariable int timeSlotId,@PathVariable String comments) {
+        boolean r1=true;
+        List<StuCafeGroup> scg = stuCafeGroupRepository.findByCafeIDAndUserID(cafeId,userId);
+        for (StuCafeGroup stuCafeGroup : scg) {System.out.println(stuCafeGroup);}
 
+        if(scg.size()==0){
+            r1 = stuCafeGroupService.requestForShift(userId,cafeId);
+
+        }
+        if(r1 && scheduleService.requestForShift(userId,cafeId,timeSlotId,comments) )
+            return new ResponseEntity<>(HttpStatus.OK);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+
+    }
 
 }

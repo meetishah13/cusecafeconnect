@@ -15,4 +15,6 @@ public interface ScheduleService {
     void deleteSchedule(int scheduleID);
 	ResponseEntity<Object> getUserScheduleById(int userId);
 	ResponseEntity<Object> getScheduleByCafeId(int cafeId);
+
+   boolean requestForShift(int userId, int cafeId, int timeSlotId,String comments);
 }
