@@ -1,10 +1,7 @@
 package com.example.cuseCafeConnect.services.impl;
 
 import com.example.cuseCafeConnect.models.*;
-import com.example.cuseCafeConnect.repositories.CafeRepository;
-import com.example.cuseCafeConnect.repositories.ScheduleRepository;
-import com.example.cuseCafeConnect.repositories.SubBookRepository;
-import com.example.cuseCafeConnect.repositories.UserRepository;
+import com.example.cuseCafeConnect.repositories.*;
 import com.example.cuseCafeConnect.services.ScheduleService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +23,12 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Autowired
     private ScheduleRepository scheduleRepository;
 
+	@Autowired
+	private UserRepository userRepository;
+	@Autowired
+	private CafeRepository cafeRepository;
+	@Autowired
+	private TimeSlotRepository timeSlotRepository;
     @Override
     public Schedule createSchedule(Schedule schedule) {
         return scheduleRepository.save(schedule);
@@ -118,6 +121,34 @@ public class ScheduleServiceImpl implements ScheduleService {
 		}
 		return new ResponseEntity<>(schedules,HttpStatus.OK);
 	}
+
+	@Override
+	public boolean requestForShift(int userId, int cafeId,int timeSlotID, String comments){
+
+		Schedule schedule = new Schedule();
+		schedule.setUser(getUserById(userId));
+		schedule.setCafe(getCafeById(cafeId));
+		schedule.setTimeslot(getTimeSlotById(timeSlotID));
+		schedule.setRequestComments(comments);
+		try {
+			scheduleRepository.save(schedule);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+
+	}
+	private User getUserById(int userId) {
+		return userRepository.findById(userId).orElse(null);
+	}
+	private Cafe getCafeById(int cafeId) {
+		return cafeRepository.findById(cafeId).orElse(null);
+	}
+	private TimeSlot getTimeSlotById(int timeSlotId) {
+		return timeSlotRepository.findById(timeSlotId).orElse(null);
+	}
+
 	@Service
 	public class DropShiftService {
 

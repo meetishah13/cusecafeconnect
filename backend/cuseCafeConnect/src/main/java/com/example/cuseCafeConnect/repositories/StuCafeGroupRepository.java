@@ -14,4 +14,7 @@ public interface StuCafeGroupRepository extends JpaRepository<StuCafeGroup, Inte
     @Query("SELECT cafe.cafeID, cafe.cafeName, cafe.cafeLat, cafe.cafeLong FROM Cafe cafe WHERE cafe.cafeName!= 'Student' AND cafe.cafeID NOT IN " +
             "(SELECT stuCafe.cafeID FROM StuCafeGroup stuCafe WHERE stuCafe.userID = :userId)")
     List<Object[]> findCafesUserIsNotPartOf(int userId);
+    List<StuCafeGroup> findByCafeIDAndUserID(int cafeID, int roleID);
+    @Query("SELECT s.cafeID, c.cafeName, c.cafeLat, c.cafeLong, s.isAccepted FROM StuCafeGroup s JOIN Cafe c ON s.cafeID = c.cafeID WHERE s.userID = :userId AND s.isAccepted = 0 OR s.isAccepted = 2")
+    List<Object[]> findRequestedCafeIdAndNameByUserId(int userId);
 }
