@@ -75,7 +75,7 @@ public class SubBookServiceImpl implements SubBookService {
             Integer scheduleId = (Integer) r[12];
 
             String key = dropDate.toString() + "-" + dropUserId + "-" + cafeId + "-" + scheduleId;
-            if (resultMap.containsKey(key)) {
+            if (resultMap.containsKey(key) && pickUserId == userId) {
                 resultMap.remove(key);
             } else {
                 if ((int) r[10] == 0) {
