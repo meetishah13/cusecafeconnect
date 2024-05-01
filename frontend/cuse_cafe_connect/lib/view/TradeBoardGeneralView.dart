@@ -26,7 +26,8 @@ class _TradeBoardGeneralViewState extends State<TradeBoardGeneralView> {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       int userId = prefs.getInt('userId') ?? 6348;
-      final List<TradeBoardModel> subBooks = await widget.tbc.fetchSubBooks(userId);
+      final List<TradeBoardModel> subBooks =
+          await widget.tbc.fetchSubBooks(userId);
       setState(() {
         _subBooks = subBooks;
         _isLoading = false;
@@ -44,8 +45,8 @@ class _TradeBoardGeneralViewState extends State<TradeBoardGeneralView> {
     return Scaffold(
       body: _isLoading
           ? Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : _buildCards(),
     );
   }
@@ -73,6 +74,7 @@ class _TradeBoardGeneralViewState extends State<TradeBoardGeneralView> {
         '${tradeBoard.dropDate.month}/${tradeBoard.dropDate.day}/${tradeBoard.dropDate.year}';
 
     return Card(
+      color: Colors.orange,
       child: Padding(
         padding: EdgeInsets.all(8.0),
         child: Column(
@@ -82,6 +84,7 @@ class _TradeBoardGeneralViewState extends State<TradeBoardGeneralView> {
             Text(
               'Cafe Name: ${tradeBoard.cafeName}',
               style: TextStyle(
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 18.0,
               ),
@@ -89,14 +92,17 @@ class _TradeBoardGeneralViewState extends State<TradeBoardGeneralView> {
             SizedBox(height: 8.0),
             Text(
               'Timing: ${tradeBoard.timeSlot}',
+              style: TextStyle(color: Colors.white),
             ),
             SizedBox(height: 8.0),
             Text(
               'Date: $formattedDate (${tradeBoard.timeSlotDay})',
+              style: TextStyle(color: Colors.white),
             ),
             SizedBox(height: 8.0),
             Text(
               'Drop User: ${tradeBoard.dropUserName}',
+              style: TextStyle(color: Colors.white),
             ),
             SizedBox(height: 8.0),
             Row(
@@ -105,22 +111,26 @@ class _TradeBoardGeneralViewState extends State<TradeBoardGeneralView> {
                 TextButton(
                   onPressed: () async {
                     int userId = await widget.tbc.getUserIdFromCache();
-                    bool success =
-                    await widget.tbc.requestForSub(tradeBoard.subId, userId);
+                    bool success = await widget.tbc
+                        .requestForSub(tradeBoard.subId, userId);
                     if (success) {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('Success'),
-                            content: Text('Request successfully done.'),
+                            title: Text('Success',
+                                style: TextStyle(color: Colors.white)),
+                            content: Text('Request successfully done.',
+                                style: TextStyle(color: Colors.white)),
+                            backgroundColor: Colors.orange,
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                   _loadData();
                                 },
-                                child: Text('OK'),
+                                child: Text('OK',
+                                    style: TextStyle(color: Colors.white)),
                               ),
                             ],
                           );
@@ -147,7 +157,7 @@ class _TradeBoardGeneralViewState extends State<TradeBoardGeneralView> {
                       );
                     }
                   },
-                  child: Text('Request'),
+                  child: Text('Request', style: TextStyle(color: Colors.white)),
                 ),
               ],
             ),

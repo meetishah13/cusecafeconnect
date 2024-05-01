@@ -29,9 +29,9 @@ class _StuCafeGroupViewState extends State<StuCafeGroupView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Groups'),
-        backgroundColor: Color(0xFFF76900),
-        foregroundColor: Color(0xFF040261),
+        title: Text('Group Management'),
+        //backgroundColor: Color(0xFFF76900),
+        //foregroundColor: Color(0xFF040261),
       ),
       body: FutureBuilder<Map<String, List<StuCafeGroup>>>(
         future: _getUserIdAndFetchCafes(context),
@@ -91,13 +91,14 @@ class _StuCafeGroupViewState extends State<StuCafeGroupView> {
       ),
     );
   }
-  Future<Map<String, List<StuCafeGroup>>> _getUserIdAndFetchCafes(BuildContext context) async {
+
+  Future<Map<String, List<StuCafeGroup>>> _getUserIdAndFetchCafes(
+      BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String userId = (prefs.getInt('userId') ?? 6348).toString();
     String deviceType = getDeviceType();
     return _controller.fetchCafes(deviceType, userId);
   }
-
 
   Widget _buildCafeCard(StuCafeGroup cafe) {
     return Card(
