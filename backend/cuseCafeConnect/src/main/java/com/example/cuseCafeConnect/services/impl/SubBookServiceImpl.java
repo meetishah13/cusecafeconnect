@@ -65,24 +65,63 @@ public class SubBookServiceImpl implements SubBookService {
     @Override
     public ResponseEntity<Object> findSubBooksByPickUpUserIsNullOrAcceptSub(int userId) {
         List<Object[]> res = subBookRepository.findSubBooksByPickUpUserIsNullOrAcceptSub();
-        List<SubBookSchedule> result = new ArrayList<>();
+        Map<String, SubBookSchedule> resultMap = new HashMap<>();
+
         for (Object[] r : res) {
             Integer dropUserId = (Integer) r[2];
             Integer pickUserId = (Integer) r[4];
-            if (!dropUserId.equals(userId) && (pickUserId == null || !pickUserId.equals(userId))) {
-                System.out.println("Id " + r[0]);
-                System.out.println("Cafe Name " + r[1]);
-                System.out.println("Drop user Name " + r[3]);
-                System.out.println("TimeSlot " + r[7]);
-                System.out.println("Time slot day " + r[8]);
-                System.out.println("Drop Date " + r[9]);
-                SubBookSchedule s = new SubBookSchedule((int) r[0], (String) r[1], (String) r[3], (String) r[7],
-                        (String) r[8], (LocalDateTime) r[9], "", (r[5] != null) ? (String) r[5] : "","");
-                result.add(s);
+            LocalDateTime dropDate = (LocalDateTime) r[9];
+            Integer cafeId = (Integer) r[11];
+            Integer scheduleId = (Integer) r[12];
+
+            String key = dropDate.toString() + "-" + dropUserId + "-" + cafeId + "-" + scheduleId;
+            if (resultMap.containsKey(key) && pickUserId == userId) {
+                resultMap.remove(key);
+            } else {
+                if ((int) r[10] == 0) {
+
+                    if (!dropUserId.equals(userId) && (pickUserId == null || !pickUserId.equals(userId))) {
+                        SubBookSchedule s = new SubBookSchedule((int) r[0], (String) r[1], (String) r[3], (String) r[7],
+                                (String) r[8], dropDate, "", (r[5] != null) ? (String) r[5] : "", "");
+                        resultMap.put(key, s);
+                    }
+
+                }
             }
         }
+
+        List<SubBookSchedule> result = new ArrayList<>(resultMap.values());
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    // @Override
+    // public ResponseEntity<Object> findSubBooksByPickUpUserIsNullOrAcceptSub(int
+    // userId) {
+    // List<Object[]> res =
+    // subBookRepository.findSubBooksByPickUpUserIsNullOrAcceptSub();
+    // List<SubBookSchedule> result = new ArrayList<>();
+    // for (Object[] r : res) {
+    // Integer dropUserId = (Integer) r[2];
+    // Integer pickUserId = (Integer) r[4];
+    // if (!dropUserId.equals(userId) && (pickUserId == null ||
+    // !pickUserId.equals(userId))) {
+    // System.out.println("Id " + r[0]);
+    // System.out.println("Cafe Name " + r[1]);
+    // System.out.println("Drop user Name " + r[3]);
+    // System.out.println("TimeSlot " + r[7]);
+    // System.out.println("Time slot day " + r[8]);
+    // System.out.println("Drop Date " + r[9]);
+    // System.out.println("Cafe Id " + r[11]);
+    // System.out.println("Schedule Id " + r[12]);
+    // SubBookSchedule s = new SubBookSchedule((int) r[0], (String) r[1], (String)
+    // r[3], (String) r[7],
+    // (String) r[8], (LocalDateTime) r[9], "", (r[5] != null) ? (String) r[5] :
+    // "","");
+    // result.add(s);
+    // }
+    // }
+    // return new ResponseEntity<>(result, HttpStatus.OK);
+    // }
 
     @Override
     public ResponseEntity<Object> requestForSub(int subId, int userId) {
@@ -169,7 +208,7 @@ public class SubBookServiceImpl implements SubBookService {
                 status = "In Review";
             }
             SubBookSchedule s = new SubBookSchedule((int) r[0], (String) r[1], (String) r[3], (String) r[7],
-                    (String) r[8], (LocalDateTime) r[9], status, (String) r[5],"");
+                    (String) r[8], (LocalDateTime) r[9], status, (String) r[5], "");
             result.add(s);
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -190,7 +229,9 @@ public class SubBookServiceImpl implements SubBookService {
             } else {
                 status = "In Review";
             }
-            SubBookSchedule s = new SubBookSchedule((int) r[0], (String) r[1], (String) r[3], (String) r[7], (String) r[8], (LocalDateTime) r[9], status, (String) r[5],r[11] != null ? ((String) r[11]).replaceAll("\"", "") : "");
+            SubBookSchedule s = new SubBookSchedule((int) r[0], (String) r[1], (String) r[3], (String) r[7],
+                    (String) r[8], (LocalDateTime) r[9], status, (String) r[5],
+                    r[11] != null ? ((String) r[11]).replaceAll("\"", "") : "");
             result.add(s);
         }
         return new ResponseEntity<>(result, HttpStatus.OK);

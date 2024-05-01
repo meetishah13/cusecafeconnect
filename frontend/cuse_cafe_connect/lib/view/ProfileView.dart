@@ -167,13 +167,13 @@ class _ProfileViewState extends State<ProfileView> {
 
   Widget _buildCircularImage(Uint8List bytes) {
     return Container(
-      width: 250,
-      height: 250,
+      width: 175,
+      height: 175,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         border: Border.all(
           color: Colors.black, // Change color as needed
-          width: 4, // Adjust the thickness of the border
+          width: 1, // Adjust the thickness of the border
         ),
       ),
       child: ClipOval(
@@ -217,12 +217,6 @@ class _ProfileViewState extends State<ProfileView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildDetailItem('User Email', _emailController),
-                _buildDetailItem('First Name', _firstNameController),
-                _buildDetailItem('Last Name', _lastNameController),
-                _buildDetailItem('Phone Number', _phoneNumberController),
-                SizedBox(height: 20),
-                if (_isEditing) _buildImagePicker(),
                 if (imagePath != '' && !_isEditing)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -230,6 +224,12 @@ class _ProfileViewState extends State<ProfileView> {
                       _buildCircularImage(bytes),
                     ],
                   ),
+                _buildDetailItem('User Email', _emailController),
+                _buildDetailItem('First Name', _firstNameController),
+                _buildDetailItem('Last Name', _lastNameController),
+                _buildDetailItem('Phone Number', _phoneNumberController),
+                SizedBox(height: 20),
+                if (_isEditing) _buildImagePicker(),
               ],
             ),
           ),

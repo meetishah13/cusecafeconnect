@@ -10,7 +10,7 @@ import javax.persistence.Table;
 @Table(name = "stu_cafe_group")
 public class StuCafeGroup {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int stuCafeGrpID;
     private int userID;
     private int cafeID;
@@ -23,6 +23,12 @@ public class StuCafeGroup {
         this.stuCafeGrpID = stuCafeGrpID;
         this.userID = userID;
         this.cafeID = cafeID;
+        this.isAccepted = isAccepted;
+    }
+
+    public StuCafeGroup(int userId, int cafeId, int isAccepted) {
+        this.userID = userId;
+        this.cafeID = cafeId;
         this.isAccepted = isAccepted;
     }
 

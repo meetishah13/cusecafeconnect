@@ -2,7 +2,9 @@
 package com.example.cuseCafeConnect.services.impl;
 
 import com.example.cuseCafeConnect.models.Cafe;
+import com.example.cuseCafeConnect.models.Schedule;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.example.cuseCafeConnect.models.StuCafeGroup;
 import com.example.cuseCafeConnect.repositories.StuCafeGroupRepository;
@@ -52,4 +54,21 @@ public class StuCafeGroupImpl implements StuCafeGroupService {
     public List<Object[]> findCafesUserIsNotPartOf(int userId) {
         return stuCafeGroupRepository.findCafesUserIsNotPartOf(userId);
     }
+
+    @Override
+    public boolean requestForShift(int userId, int cafeId) {
+        StuCafeGroup newStuCafeGroup = new StuCafeGroup(userId,cafeId,0);
+        try {
+            stuCafeGroupRepository.save(newStuCafeGroup);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    @Override
+    public List<Object[]> getRequestedCafeIdsAndNamesForUser(int userId) {
+        return stuCafeGroupRepository.findRequestedCafeIdAndNameByUserId(userId);
+    }
+
 }
