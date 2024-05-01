@@ -28,7 +28,7 @@ class _TradeBoardRequestedViewState extends State<TradeBoardRequestedView> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       int userId = prefs.getInt('userId') ?? 6348;
       final List<TradeBoardModel> subBooks =
-      await widget.tbc.fetchRequestedSubBooks(userId);
+          await widget.tbc.fetchRequestedSubBooks(userId);
       setState(() {
         _subBooks = subBooks;
         _isLoading = false;
@@ -46,8 +46,8 @@ class _TradeBoardRequestedViewState extends State<TradeBoardRequestedView> {
     return Scaffold(
       body: _isLoading
           ? Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : _buildCards(),
     );
   }
@@ -98,6 +98,7 @@ class _TradeBoardRequestedViewState extends State<TradeBoardRequestedView> {
     }
 
     return Card(
+      color: Colors.orange,
       child: Padding(
         padding: EdgeInsets.all(8.0),
         child: Column(
@@ -112,6 +113,7 @@ class _TradeBoardRequestedViewState extends State<TradeBoardRequestedView> {
             Text(
               'Cafe Name: ${tradeBoard.cafeName}',
               style: TextStyle(
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 18.0,
               ),
@@ -119,15 +121,18 @@ class _TradeBoardRequestedViewState extends State<TradeBoardRequestedView> {
             SizedBox(height: 8.0),
             Text(
               'Shift Time: ${tradeBoard.timeSlot}',
+              style: TextStyle(color: Colors.white),
             ),
             SizedBox(height: 8.0),
             Text(
               'Date: $formattedDate (${tradeBoard.timeSlotDay})',
+              style: TextStyle(color: Colors.white),
             ),
             if (tradeBoard.comments != "") ...[
               SizedBox(height: 8.0),
               Text(
                 'Reason: ${tradeBoard.comments}',
+                style: TextStyle(color: Colors.white),
               ),
             ],
           ],
