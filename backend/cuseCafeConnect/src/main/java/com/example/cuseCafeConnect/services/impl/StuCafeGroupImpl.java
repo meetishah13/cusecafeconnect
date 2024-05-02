@@ -71,4 +71,9 @@ public class StuCafeGroupImpl implements StuCafeGroupService {
         return stuCafeGroupRepository.findRequestedCafeIdAndNameByUserId(userId);
     }
 
+    @Override
+    public List<Object[]> getPendingGroupRequests() {
+        return stuCafeGroupRepository.getPendingGroupRequests();
+    }
+
 }

@@ -167,5 +167,20 @@ public class StuCafeGroupController {
 
 
     }
+    //Deena APIs
+    @GetMapping("/pendingGroups")
+    public List<Map<String, String>> getPendingGroupRequests() {
+        List<Object[]> usersWithCafe = stuCafeGroupService.getPendingGroupRequests();
+        List<Map<String, String>> result = new ArrayList<>();
+
+        for (Object[] userWithCafe : usersWithCafe) {
+            Map<String, String> map = new HashMap<>();
+            map.put("UserName", (String) userWithCafe[0]);
+            map.put("CafeName", (String) userWithCafe[1]);
+            result.add(map);
+        }
+
+        return result;
+    }
 
 }
