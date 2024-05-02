@@ -28,12 +28,14 @@ class ScheduleController {
 
   Future<bool> acceptSchedule(int scheduleId,String comment) async {
     try {
-      final response = await http.put(Uri.parse('http://localhost:8080/api/schedules/accept/$scheduleId/$comment'));
+      final response = await http.put(Uri.parse(
+          'http://localhost:8080/api/schedules/accept/$scheduleId/$comment'));
       return response.statusCode == 200;
     } catch (e) {
       print('Error accepting schedule: $e');
       return false;
     }
+  }
   Future<List<ScheduleManager>> fetchSchedulesByCafeId(int cafeId) async {
     return await ss.fetchSchedulesByCafeId(cafeId);
   }
@@ -53,8 +55,9 @@ class ScheduleController {
     UserModel? user = await us.getProfileDetails(userId);
     return user?.cafeID ?? -1;
   }
+
 }
 
 
-}
+
 
