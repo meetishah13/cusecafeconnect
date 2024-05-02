@@ -80,6 +80,27 @@ class APIService {
       throw Exception('Failed to load pending groups');
     }
   }
+  Future<bool> acceptGroup(String device,int groupId) async {
+    // Implement your accept group API call
+    try {
+      final response = await http.post(Uri.parse('http://$device:8080/api/stucafegroup/accept/$groupId'));
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Error accepting group: $e');
+      return false;
+    }
+  }
+
+  Future<bool> rejectGroup(String device,int groupId) async {
+    // Implement your reject group API call
+    try {
+      final response = await http.post(Uri.parse('http://$device:8080/api/stucafegroup/reject/$groupId'));
+      return response.statusCode == 200;
+    } catch (e) {
+      print('Error rejecting group: $e');
+      return false;
+    }
+  }
 
 
 

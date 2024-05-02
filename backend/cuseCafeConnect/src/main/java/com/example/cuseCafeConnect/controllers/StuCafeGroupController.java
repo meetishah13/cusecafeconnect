@@ -175,12 +175,32 @@ public class StuCafeGroupController {
 
         for (Object[] userWithCafe : usersWithCafe) {
             Map<String, String> map = new HashMap<>();
-            map.put("UserName", (String) userWithCafe[0]);
-            map.put("CafeName", (String) userWithCafe[1]);
+            map.put("StuCafeGroupID", userWithCafe[0].toString());
+            map.put("UserName", (String) userWithCafe[1]);
+            map.put("CafeName", (String) userWithCafe[2]);
             result.add(map);
         }
 
         return result;
+    }
+    @PostMapping("/accept/{groupId}")
+    public ResponseEntity<String> acceptGroup(@PathVariable int groupId) {
+        boolean success = stuCafeGroupService.acceptGroup(groupId);
+        if (success) {
+            return ResponseEntity.ok("Group accepted successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/reject/{groupId}")
+    public ResponseEntity<String> rejectGroup(@PathVariable int groupId) {
+        boolean success = stuCafeGroupService.rejectGroup(groupId);
+        if (success) {
+            return ResponseEntity.ok("Group rejected successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

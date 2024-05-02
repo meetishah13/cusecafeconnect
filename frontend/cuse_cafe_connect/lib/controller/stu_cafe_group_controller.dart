@@ -32,10 +32,15 @@ class StuCafeGroupController {
 
   Future<List<Map<String, String>>> fetchPendingGroups(String device) async {
     String localhost = (device == 'ios') ? 'localhost' : '10.0.2.2';
-    return await _service.fetchPendingGroups(device);
+    return await _service.fetchPendingGroups(localhost);
   }
-
-
-
+  Future<bool> acceptGroup(String device,int groupId) async {
+    String localhost = (device == 'ios') ? 'localhost' : '10.0.2.2';
+    return await _service.acceptGroup(localhost,groupId);
+  }
+  Future<bool> rejectGroup(String device,int groupId) async {
+    String localhost = (device == 'ios') ? 'localhost' : '10.0.2.2';
+    return await _service.rejectGroup(localhost,groupId);
+  }
 
 }

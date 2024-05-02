@@ -1,3 +1,4 @@
+import 'package:cuse_cafe_connect/view/PendingGroupsView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,7 @@ class _HeadMainScreenState extends State<HeadMainScreen> {
   int _selectedIndex = 0;
 
   static List<Widget> _widgetOptions = <Widget>[
-    Text("Group"),
+    PendingGroupsView(),
     Text("Sch"),
     Text("Cafe"),
     Text("Profile"),
