@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 
 import 'calendar_view.dart';
 
-class MainScreen extends StatefulWidget {
+class UserMainScreen extends StatefulWidget {
   @override
-  _MainScreenState createState() => _MainScreenState();
+  _UserMainScreenState createState() => _UserMainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _UserMainScreenState extends State<UserMainScreen> {
   int _selectedIndex = 0;
 
   static List<Widget> _widgetOptions = <Widget>[

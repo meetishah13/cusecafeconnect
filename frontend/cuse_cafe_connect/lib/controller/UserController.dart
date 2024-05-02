@@ -7,11 +7,13 @@ import 'package:cuse_cafe_connect/model/UserModel.dart';
 import 'package:cuse_cafe_connect/service/UserService.dart';
 import 'package:cuse_cafe_connect/view/TradeBoardHome.dart';
 import 'package:cuse_cafe_connect/view/TradeBoardManagerView.dart';
+import 'package:cuse_cafe_connect/view/head_main_screen.dart';
+import 'package:cuse_cafe_connect/view/supervisor_main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:crypto/crypto.dart';
 
-import '../view/main_screen.dart';
+import '../view/user_main_screen.dart';
 
 class UserController {
   final UserService us = UserService();
@@ -69,17 +71,21 @@ class UserController {
   void handleLoginSuccess(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int userRole = prefs.getInt('roleId') ?? 3;
-    TradeBoardController tbc = TradeBoardController();
 
     if (userRole == 3) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MainScreen()),
+        MaterialPageRoute(builder: (context) => UserMainScreen()),
       );
     } else if (userRole == 2) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => TradeBoardManagerView(tbc)),
+        MaterialPageRoute(builder: (context) => SupervisorMainScreen()),
+      );
+    } else if (userRole == 1) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HeadMainScreen()),
       );
     }
   }
