@@ -32,7 +32,7 @@ class UserService {
   Future<UserModel?> getProfileDetails(int userId) async {
     print(userId.toString());
     final url =
-    Uri.parse('http://localhost:8080/api/users/$userId/getUserDetails');
+        Uri.parse('http://localhost:8080/api/users/$userId/getUserDetails');
 
     try {
       final response = await http.get(url);
@@ -51,15 +51,14 @@ class UserService {
     }
   }
 
-
   Future<bool> updateUserDetails(
-      int userID,
-      String email,
-      String fName,
-      String lName,
-      String phoneNo,
-      File? photoPath,
-      ) async {
+    int userID,
+    String email,
+    String fName,
+    String lName,
+    String phoneNo,
+    File? photoPath,
+  ) async {
     try {
       var uri = Uri.parse('http://localhost:8080/api/users/editUser');
 
@@ -70,19 +69,19 @@ class UserService {
         ..fields['lName'] = lName
         ..fields['phoneNo'] = phoneNo;
 
-      // Add photoPath if provided
-      if (photoPath != null) {
-        // Convert image file to bytes
-        List<int> imageBytes = await photoPath.readAsBytes();
-        // Create multipart file from bytes
-        var multipartFile = http.MultipartFile.fromBytes(
-          'photoPath',
-          imageBytes,
-          filename: 'user_photo.jpg', // Provide a filename for the image
-        );
-        // Add multipart file to request
-        request.files.add(multipartFile);
-      }
+      // // Add photoPath if provided
+      // if (photoPath != null) {
+      //   // Convert image file to bytes
+      //   List<int> imageBytes = await photoPath.readAsBytes();
+      //   // Create multipart file from bytes
+      //   var multipartFile = http.MultipartFile.fromBytes(
+      //     'photoPath',
+      //     imageBytes,
+      //     filename: 'user_photo.jpg', // Provide a filename for the image
+      //   );
+      //   // Add multipart file to request
+      //   request.files.add(multipartFile);
+      // }
 
       // Send the request
       var response = await request.send();
@@ -92,7 +91,8 @@ class UserService {
         print('User details updated successfully');
         return true;
       } else {
-        print('Failed to update user details. Status code: ${response.statusCode}');
+        print(
+            'Failed to update user details. Status code: ${response.statusCode}');
         return false;
       }
     } catch (error) {
@@ -100,7 +100,6 @@ class UserService {
       return false;
     }
   }
-
 
   Future<bool> signupUser(String suid, String firstName, String lastName,
       String email, String password, String phoneNumber) async {

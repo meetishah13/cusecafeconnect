@@ -57,8 +57,22 @@ class UserController {
     return null;
   }
 
-  Future<bool> updateProfileDetails(int userID,String email,String fName,String lName,String phoneNo,File? photoPath,) async {
-    return us.updateUserDetails(userID,email,fName,lName,phoneNo,photoPath,);
+  Future<bool> updateProfileDetails(
+    int userID,
+    String email,
+    String fName,
+    String lName,
+    String phoneNo,
+    File? photoPath,
+  ) async {
+    return us.updateUserDetails(
+      userID,
+      email,
+      fName,
+      lName,
+      phoneNo,
+      photoPath,
+    );
   }
 
   Future<void> saveUserDataInCache(int? userId, int? roleId) async {
@@ -66,6 +80,7 @@ class UserController {
     await prefs.setInt('userId', userId ?? 1234);
     await prefs.setInt('roleId', roleId ?? 3);
   }
+
   void handleLoginSuccess(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int userRole = prefs.getInt('roleId') ?? 3;

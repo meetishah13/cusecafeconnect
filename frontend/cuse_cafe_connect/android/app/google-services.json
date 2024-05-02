@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "66040998353",
+    "project_id": "cusecafeconnect-59117",
+    "storage_bucket": "cusecafeconnect-59117.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:66040998353:android:30d07b7f6c6f9c13fb98f0",
+        "android_client_info": {
+          "package_name": "com.example.cuse_cafe_connect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA49msLTbsJ5xnXoqmCy08h8XZLaE8PqCk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
