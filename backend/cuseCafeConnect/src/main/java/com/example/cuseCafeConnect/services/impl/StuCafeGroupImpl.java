@@ -71,4 +71,36 @@ public class StuCafeGroupImpl implements StuCafeGroupService {
         return stuCafeGroupRepository.findRequestedCafeIdAndNameByUserId(userId);
     }
 
+    @Override
+    public List<Object[]> getPendingGroupRequests() {
+        return stuCafeGroupRepository.getPendingGroupRequests();
+    }
+
+    @Override
+    public boolean acceptGroup(int groupId) {
+        // Retrieve the entity by ID
+        StuCafeGroup group = stuCafeGroupRepository.findById(groupId).orElse(null);
+        // Update the isAccepted field and save the entity
+        if (group != null) {
+            group.setIsAccepted(1); // Assuming you have a field named isAccepted in your entity
+            stuCafeGroupRepository.save(group);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean rejectGroup(int groupId) {
+        // Retrieve the entity by ID
+        StuCafeGroup group = stuCafeGroupRepository.findById(groupId).orElse(null);
+
+        // Update the isAccepted field and save the entity
+        if (group != null) {
+            group.setIsAccepted(2); // Assuming you have a field named isAccepted in your entity
+            stuCafeGroupRepository.save(group);
+            return true;
+        }
+        return false;
+    }
+
 }

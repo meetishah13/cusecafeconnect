@@ -67,7 +67,7 @@ class LoginView extends StatelessWidget {
                       controller.loginUser(context);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFF76900),
+                      backgroundColor: Color(0xFFF76900),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),

@@ -23,10 +23,14 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 	@Query("SELECT sb FROM SubBook sb WHERE sb.dropUser.id = :userId AND sb.acceptSub = 1")
 	List<SubBook> findDropUserSubById(@Param("userId") int userId);
 	
-	@Query(value="SELECT ts.timeSlot, ts.timeSlotDay, CONCAT(u.fname, ' ', u.lname) AS userName FROM timeSlot ts LEFT JOIN schedule s ON ts.timeSlotID = s.timeSlotID AND s.cafeID = ?1 and s.isAccepted = 1 LEFT JOIN user u ON s.userID = u.userID",nativeQuery= true)
+	@Query(value="SELECT ts.timeSlot, ts.timeSlotDay, CONCAT(u.fname, ' ', u.lname) AS userName, u.phoneNo, u.userEmail FROM timeSlot ts LEFT JOIN schedule s ON ts.timeSlotID = s.timeSlotID AND s.cafeID = ?1 and s.isAccepted = 1 LEFT JOIN user u ON s.userID = u.userID",nativeQuery= true)
 	List<Object[]> findScheduleByCafeId(int cafeId);
 
 
+
+	//Deena APIs
+	@Query("SELECT CONCAT(u.fName, ' ', u.lName) AS UserName, c.cafeName AS CafeName, t.timeSlot AS TimeSlot, t.timeSlotDay AS TimeSlotDay, s.scheduleID AS ScheduleID FROM Schedule s JOIN s.user u JOIN s.cafe c JOIN s.timeslot t WHERE s.isAccepted = 0")
+	List<Object[]> findPendingSchedules();
 
 
 

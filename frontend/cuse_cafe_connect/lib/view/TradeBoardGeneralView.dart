@@ -74,7 +74,7 @@ class _TradeBoardGeneralViewState extends State<TradeBoardGeneralView> {
         '${tradeBoard.dropDate.month}/${tradeBoard.dropDate.day}/${tradeBoard.dropDate.year}';
 
     return Card(
-      color: const Color(0xFFF76900),
+      color: Color(0xFFF76900),
       child: Padding(
         padding: EdgeInsets.all(8.0),
         child: Column(

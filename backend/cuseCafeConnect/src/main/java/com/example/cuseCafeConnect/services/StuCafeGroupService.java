@@ -16,5 +16,7 @@ public interface StuCafeGroupService {
      List<Object[]> findCafesUserIsNotPartOf(int userId);
     boolean requestForShift(int userId, int cafeId);
     List<Object[]> getRequestedCafeIdsAndNamesForUser(int userId);
-
+    List<Object[]> getPendingGroupRequests();
+     boolean acceptGroup(int groupId);
+     boolean rejectGroup(int groupId);
 }

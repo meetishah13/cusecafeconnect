@@ -167,5 +167,40 @@ public class StuCafeGroupController {
 
 
     }
+    //Deena APIs
+    @GetMapping("/pendingGroups")
+    public List<Map<String, String>> getPendingGroupRequests() {
+        List<Object[]> usersWithCafe = stuCafeGroupService.getPendingGroupRequests();
+        List<Map<String, String>> result = new ArrayList<>();
+
+        for (Object[] userWithCafe : usersWithCafe) {
+            Map<String, String> map = new HashMap<>();
+            map.put("StuCafeGroupID", userWithCafe[0].toString());
+            map.put("UserName", (String) userWithCafe[1]);
+            map.put("CafeName", (String) userWithCafe[2]);
+            result.add(map);
+        }
+
+        return result;
+    }
+    @PostMapping("/accept/{groupId}")
+    public ResponseEntity<String> acceptGroup(@PathVariable int groupId) {
+        boolean success = stuCafeGroupService.acceptGroup(groupId);
+        if (success) {
+            return ResponseEntity.ok("Group accepted successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/reject/{groupId}")
+    public ResponseEntity<String> rejectGroup(@PathVariable int groupId) {
+        boolean success = stuCafeGroupService.rejectGroup(groupId);
+        if (success) {
+            return ResponseEntity.ok("Group rejected successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }

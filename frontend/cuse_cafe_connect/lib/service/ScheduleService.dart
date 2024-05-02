@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:cuse_cafe_connect/model/ScheduleManager.dart';
 import 'package:cuse_cafe_connect/model/Shift.dart';
+import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 
 class ScheduleService {
@@ -42,4 +43,16 @@ class ScheduleService {
 
     return schedules;
   }
+
+  Future<List<ScheduleManager>> fetchSchedulesByCafeId(int cafeId) async {
+  final response = await http.get(Uri.parse('http://localhost:8080/api/schedules/user/$cafeId/schedule'));
+
+  if (response.statusCode == 200) {
+    List<dynamic> jsonList = jsonDecode(response.body);
+    List<ScheduleManager> schedules = jsonList.map((json) => ScheduleManager.fromJson(json)).toList();
+    return schedules;
+  } else {
+    throw Exception('Failed to load schedules');
+  }
+}
 }

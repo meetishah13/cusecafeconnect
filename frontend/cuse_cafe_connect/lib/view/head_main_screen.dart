@@ -1,25 +1,22 @@
-import 'package:cuse_cafe_connect/view/ProfileView.dart';
-import 'package:cuse_cafe_connect/view/TradeBoardHome.dart';
-import 'package:cuse_cafe_connect/view/stu_cafe_group_view.dart';
+import 'package:cuse_cafe_connect/view/PendingGroupsView.dart';
+import 'package:cuse_cafe_connect/view/PendingScheduleView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'calendar_view.dart';
 
-class MainScreen extends StatefulWidget {
+class HeadMainScreen extends StatefulWidget {
   @override
-  _MainScreenState createState() => _MainScreenState();
+  _HeadMainScreenState createState() => _HeadMainScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _HeadMainScreenState extends State<HeadMainScreen> {
   int _selectedIndex = 0;
 
   static List<Widget> _widgetOptions = <Widget>[
-    // Replace these with your actual tab views
-    CalendarView(),
-    StuCafeGroupView(), // Assuming this is the Groups tab
-    TradeBoardHome(),
-    ProfileView(),
+    PendingGroupsView(),
+    PendingScheduleView(),
+    Text("Cafe"),
+    Text("Profile"),
   ];
 
   void _onItemTapped(int index) {
@@ -32,8 +29,21 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          //title: Text('My App'),
+        title: Text('Cuse Cafe Connect'),
+        backgroundColor: Color(0xFFF76900),
+        foregroundColor: Colors.white,// Set background color to F76900
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.exit_to_app,
+              color: Colors.white, // Set signout button color to white
+            ),
+            onPressed: () {
+              // _signOut();
+            },
           ),
+        ],
+      ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -41,15 +51,15 @@ class _MainScreenState extends State<MainScreen> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),
+            label: 'Group',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
             label: 'Schedule',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.group),
-            label: 'Groups',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.swap_horiz),
-            label: 'TradeBoard',
+            label: 'Cafe',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
@@ -57,7 +67,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Color(0xFFF76900),
         unselectedItemColor:
             Colors.grey, // Optional: Set the color for unselected items
         type: BottomNavigationBarType

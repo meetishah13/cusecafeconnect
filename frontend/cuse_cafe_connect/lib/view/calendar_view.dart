@@ -212,9 +212,6 @@ class _CalendarViewState extends State<CalendarView> {
     //final markedDays = _getMarkedDays();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Calendar'),
-      ),
       body: isReady
           ? Column(
               children: [
@@ -272,7 +269,7 @@ class _CalendarViewState extends State<CalendarView> {
                                 width: 42,
                                 height: 42,
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFFF76900),
+                                  color: Color(0xFFF76900),
                                   shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.white,

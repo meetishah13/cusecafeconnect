@@ -2,7 +2,7 @@ package com.example.cuseCafeConnect.controllers;
 
 
 import com.example.cuseCafeConnect.models.*;
-//import com.example.cuseCafeConnect.models.TotalShiftsInSchedule;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -72,7 +72,34 @@ public class ScheduleController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error dropping shift: " + e.getMessage());
         }
     }
+    //Deenaaa
 
+    @GetMapping("/pendingSchedules")
+    public ResponseEntity<List<PendingScheduleDTO>> getPendingSchedules() {
+        List<PendingScheduleDTO> pendingSchedules = scheduleService.getPendingSchedules();
+        return new ResponseEntity<>(pendingSchedules, HttpStatus.OK);
+    }
+
+    @PutMapping("/accept/{scheduleId}/{comment}")
+    public ResponseEntity<String> acceptSchedule(@PathVariable("scheduleId") int scheduleId, @PathVariable("comment") String comment) {
+        boolean success = scheduleService.acceptSchedule(scheduleId,comment);
+        if (success) {
+            return ResponseEntity.ok("Schedule accepted successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // API to reject a schedule
+    @PutMapping("/reject/{scheduleId}/{comment}")
+    public ResponseEntity<String> rejectSchedule(@PathVariable("scheduleId") int scheduleId,  @PathVariable("comment") String comment) {
+        boolean success = scheduleService.rejectSchedule(scheduleId,comment);
+        if (success) {
+            return ResponseEntity.ok("Schedule rejected successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 
 

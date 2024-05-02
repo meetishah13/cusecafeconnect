@@ -240,7 +240,6 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Profile'),
         actions: _isEditing
             ? [
                 Padding(
