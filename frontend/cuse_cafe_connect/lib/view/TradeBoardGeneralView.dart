@@ -74,7 +74,7 @@ class _TradeBoardGeneralViewState extends State<TradeBoardGeneralView> {
         '${tradeBoard.dropDate.month}/${tradeBoard.dropDate.day}/${tradeBoard.dropDate.year}';
 
     return Card(
-      color: Colors.orange,
+      color: const Color(0xFFF76900),
       child: Padding(
         padding: EdgeInsets.all(8.0),
         child: Column(
@@ -118,10 +118,14 @@ class _TradeBoardGeneralViewState extends State<TradeBoardGeneralView> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('Success',
-                                style: TextStyle(color: Colors.white)),
-                            content: Text('Request successfully done.',
-                                style: TextStyle(color: Colors.white)),
+                            title: Text(
+                              'Success',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            content: Text(
+                              'Request successfully done.',
+                              style: TextStyle(color: Colors.white),
+                            ),
                             backgroundColor: Colors.orange,
                             actions: <Widget>[
                               TextButton(
@@ -129,8 +133,10 @@ class _TradeBoardGeneralViewState extends State<TradeBoardGeneralView> {
                                   Navigator.of(context).pop();
                                   _loadData();
                                 },
-                                child: Text('OK',
-                                    style: TextStyle(color: Colors.white)),
+                                child: Text(
+                                  'OK',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
                             ],
                           );
@@ -143,7 +149,8 @@ class _TradeBoardGeneralViewState extends State<TradeBoardGeneralView> {
                           return AlertDialog(
                             title: Text('Error'),
                             content: Text(
-                                'There was an error. Please try again later.'),
+                              'There was an error. Please try again later.',
+                            ),
                             actions: <Widget>[
                               TextButton(
                                 onPressed: () {
@@ -157,7 +164,20 @@ class _TradeBoardGeneralViewState extends State<TradeBoardGeneralView> {
                       );
                     }
                   },
-                  child: Text('Request', style: TextStyle(color: Colors.white)),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(
+                          20), // Adjust the border radius as needed
+                      color: Colors.white,
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Text(
+                      'Request',
+                      style: TextStyle(
+                          color: Colors.black), // Change text color to white
+                    ),
+                  ),
                 ),
               ],
             ),

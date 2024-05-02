@@ -67,7 +67,7 @@ class LoginView extends StatelessWidget {
                       controller.loginUser(context);
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
+                      backgroundColor: const Color(0xFFF76900),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
@@ -103,10 +103,10 @@ class LoginView extends StatelessWidget {
                                 builder: (context) => SignUpView()),
                           );
                         },
-                        child: Text(
+                        child: const Text(
                           'Sign up here',
                           style: TextStyle(
-                            color: Colors.orange,
+                            color: Color(0xFFF76900),
                             //decoration: TextDecoration.underline,
                           ),
                         ),

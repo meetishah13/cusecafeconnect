@@ -98,7 +98,7 @@ class _TradeBoardRequestedViewState extends State<TradeBoardRequestedView> {
     }
 
     return Card(
-      color: Colors.orange,
+      color: const Color(0xFFF76900),
       child: Padding(
         padding: EdgeInsets.all(8.0),
         child: Column(

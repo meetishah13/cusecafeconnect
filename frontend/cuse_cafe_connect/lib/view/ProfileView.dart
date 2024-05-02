@@ -240,22 +240,48 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Details'),
+        title: Text('My Profile'),
         actions: _isEditing
             ? [
-                IconButton(
-                  onPressed: _saveChanges,
-                  icon: Icon(Icons.save),
+                Padding(
+                  padding: const EdgeInsets.only(right: 15),
+                  child: GestureDetector(
+                    onTap: _saveChanges,
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFFF76900),
+                      ),
+                      child: Icon(
+                        Icons.save,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ),
               ]
             : [
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _isEditing = true;
-                    });
-                  },
-                  icon: Icon(Icons.edit),
+                Padding(
+                  padding: const EdgeInsets.only(right: 15),
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _isEditing = true;
+                      });
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFFF76900),
+                      ),
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ),
               ],
       ),
@@ -275,7 +301,7 @@ class _ProfileViewState extends State<ProfileView> {
                             _buildProfileImage(),
                           ],
                         ),
-                      _buildDetailItem('User Email', _emailController),
+                      _buildDetailItem('My Email', _emailController),
                       _buildDetailItem('First Name', _firstNameController),
                       _buildDetailItem('Last Name', _lastNameController),
                       _buildDetailItem('Phone Number', _phoneNumberController),
