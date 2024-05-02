@@ -103,7 +103,7 @@ class LoginView extends StatelessWidget {
                                 builder: (context) => SignUpView()),
                           );
                         },
-                        child: Text(
+                        child: const Text(
                           'Sign up here',
                           style: TextStyle(
                             color: Color(0xFFF76900),

@@ -383,23 +383,47 @@ class _CalendarViewState extends State<CalendarView> {
                       },
                     ),
                   ),
-                if (_droppedShifts.isNotEmpty)
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: ElevatedButton(
-                      onPressed: _clearDroppedShifts,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            Colors.orange, // Set button color to orange
-                      ),
-                      child: Text(
-                        'Clear Dropped Shifts',
-                        style: TextStyle(
-                          color: Colors.white, // Set text color to white
-                        ),
-                      ),
-                    ),
-                  ),
+                // if (_droppedShifts.isNotEmpty)
+                //   Padding(
+                //     padding: const EdgeInsets.all(16.0),
+                //     child: ElevatedButton(
+                //       onPressed: _clearDroppedShifts,
+                //       style: ElevatedButton.styleFrom(
+                //         backgroundColor: const Color(
+                //             0xFFF76900), // Set button color to orange
+                //       ),
+                //       child: Text(
+                //         'Clear Dropped Shifts',
+                //         style: TextStyle(
+                //           color: Colors.white, // Set text color to white
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                const SizedBox(height: 20),
+                Text(
+                  'Registered shift days for every week:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                Wrap(
+                  spacing: 10, // Adjust the gap between boxes
+                  children: _schedules
+                      .where((schedule) => schedule.type == ScheduleType.normal)
+                      .map((schedule) => Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 10),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF76900),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              schedule.timeSlotDay,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ))
+                      .toList(),
+                )
               ],
             )
           : const Center(

@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:cuse_cafe_connect/controller/UserController.dart';
 import 'package:cuse_cafe_connect/model/UserModel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class ProfileView extends StatefulWidget {
   ProfileView();
@@ -24,9 +27,9 @@ class _ProfileViewState extends State<ProfileView> {
   late TextEditingController _phoneNumberController;
   late TextEditingController _suIDController;
   final ImagePicker _picker = ImagePicker();
-  late Uint8List bytes;
-  String imagePath = '';
   late File _selectedImageFile;
+  String _localProfileImagePath = '';
+  String imageUrl = '';
 
   @override
   void initState() {
@@ -52,6 +55,19 @@ class _ProfileViewState extends State<ProfileView> {
 
   Future<void> _fetchUserDetails() async {
     final userDetails = await uc.getProfileDetails();
+    String userId = userDetails?.userID.toString() ?? '';
+    String defaultProfileImagePath = 'assets/user.png';
+
+    // Check if the user has a profile image in Firebase Storage
+    String imageUrl = '';
+    try {
+      imageUrl = await firebase_storage.FirebaseStorage.instance
+          .ref('profile_images/$userId.jpg')
+          .getDownloadURL();
+    } catch (error) {
+      print('Profile image not found in Firebase Storage');
+    }
+
     setState(() {
       _userDetails = userDetails;
       _suIDController.text = userDetails?.userID.toString() ?? '';
@@ -59,8 +75,8 @@ class _ProfileViewState extends State<ProfileView> {
       _firstNameController.text = userDetails?.fName ?? '';
       _lastNameController.text = userDetails?.lName ?? '';
       _phoneNumberController.text = userDetails?.phoneNo ?? '';
-      imagePath = userDetails?.photoPath ?? '';
-      bytes = base64Decode(imagePath);
+      _localProfileImagePath =
+          imageUrl.isNotEmpty ? imageUrl : defaultProfileImagePath;
     });
   }
 
@@ -70,6 +86,17 @@ class _ProfileViewState extends State<ProfileView> {
       setState(() {
         _selectedImageFile = File(pickedFile.path);
       });
+
+      Reference ref = firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('profile_images')
+          .child('${_userDetails!.userID}.jpg');
+      try {
+        await ref.putFile(_selectedImageFile);
+        imageUrl = await ref.getDownloadURL();
+      } catch (error) {
+        print("Firebase upload failed");
+      }
     }
   }
 
@@ -93,6 +120,9 @@ class _ProfileViewState extends State<ProfileView> {
           content: Text('Details updated successfully'),
         ),
       );
+
+      // Fetch updated user details after saving changes
+      await _fetchUserDetails();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -101,7 +131,6 @@ class _ProfileViewState extends State<ProfileView> {
         ),
       );
     }
-    _fetchUserDetails();
   }
 
   Widget _buildImagePicker() {
@@ -165,76 +194,123 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 
-  Widget _buildCircularImage(Uint8List bytes) {
-    return Container(
-      width: 175,
-      height: 175,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(
-          color: Colors.black, // Change color as needed
-          width: 1, // Adjust the thickness of the border
+  Widget _buildProfileImage() {
+    if (_localProfileImagePath.startsWith('http')) {
+      // If the image path is a URL, load it as a network image
+      return Container(
+        width: 175,
+        height: 175,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Colors.black,
+            width: 1,
+          ),
         ),
-      ),
-      child: ClipOval(
-        child: Image.memory(
-          bytes,
-          fit: BoxFit.fill,
+        child: ClipOval(
+          child: Image.network(
+            _localProfileImagePath,
+            fit: BoxFit.fill,
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      // If the image path is a local asset, load it as an asset image
+      return Container(
+        width: 175,
+        height: 175,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Colors.black,
+            width: 1,
+          ),
+        ),
+        child: ClipOval(
+          child: Image.asset(
+            _localProfileImagePath,
+            fit: BoxFit.fill,
+          ),
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         actions: _isEditing
             ? [
-          IconButton(
-            onPressed: _saveChanges,
-            icon: Icon(Icons.save),
-          ),
-        ]
+                Padding(
+                  padding: const EdgeInsets.only(right: 15),
+                  child: GestureDetector(
+                    onTap: _saveChanges,
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFFF76900),
+                      ),
+                      child: Icon(
+                        Icons.save,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ]
             : [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                _isEditing = true;
-              });
-            },
-            icon: Icon(Icons.edit),
-          ),
-        ],
+                Padding(
+                  padding: const EdgeInsets.only(right: 15),
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _isEditing = true;
+                      });
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFFF76900),
+                      ),
+                      child: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
       ),
       body: _userDetails == null
           ? Center(child: CircularProgressIndicator())
           : Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Form(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (imagePath != '' && !_isEditing)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                child: Form(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildCircularImage(bytes),
+                      if (_localProfileImagePath.isNotEmpty && !_isEditing)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _buildProfileImage(),
+                          ],
+                        ),
+                      _buildDetailItem('My Email', _emailController),
+                      _buildDetailItem('First Name', _firstNameController),
+                      _buildDetailItem('Last Name', _lastNameController),
+                      _buildDetailItem('Phone Number', _phoneNumberController),
+                      SizedBox(height: 20),
+                      if (_isEditing) _buildImagePicker(),
                     ],
                   ),
-                _buildDetailItem('User Email', _emailController),
-                _buildDetailItem('First Name', _firstNameController),
-                _buildDetailItem('Last Name', _lastNameController),
-                _buildDetailItem('Phone Number', _phoneNumberController),
-                SizedBox(height: 20),
-                if (_isEditing) _buildImagePicker(),
-              ],
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }

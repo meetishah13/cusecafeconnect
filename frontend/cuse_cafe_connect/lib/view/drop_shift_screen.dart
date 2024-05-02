@@ -148,7 +148,8 @@ class _DropShiftScreenState extends State<DropShiftScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
               ),
-              child: const Text('Submit Request'),
+              child: const Text('Submit Request',
+                  style: TextStyle(color: Colors.white)),
             ),
           ],
         ),
