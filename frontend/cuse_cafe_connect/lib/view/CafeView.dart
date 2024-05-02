@@ -38,9 +38,6 @@ class _CafeViewState extends State<CafeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Cafes'),
-      ),
       body: _isLoading
           ? Center(
               child: CircularProgressIndicator(),

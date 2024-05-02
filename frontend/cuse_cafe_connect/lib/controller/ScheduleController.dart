@@ -56,4 +56,6 @@ class ScheduleController {
     UserModel? user = await us.getProfileDetails(userId);
     return user?.cafeID ?? -1;
   }
+
 }
+
