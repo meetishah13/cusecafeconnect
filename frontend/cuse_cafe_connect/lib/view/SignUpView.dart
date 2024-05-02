@@ -81,7 +81,7 @@ class _SignUpViewState extends State<SignUpView> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orange,
+                backgroundColor: Color(0xFFF76900),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),

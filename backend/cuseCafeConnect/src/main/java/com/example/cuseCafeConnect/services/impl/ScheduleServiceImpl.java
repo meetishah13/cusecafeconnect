@@ -12,10 +12,8 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
@@ -107,7 +105,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 	@Override
 	public ResponseEntity<Object> getScheduleByCafeId(int cafeId) {
-		List<Object[]> sc = scheduleRepository.findScheduleByCafeId(cafeId); 
+		List<Object[]> sc = scheduleRepository.findScheduleByCafeId(cafeId);
 		List<ScheduleCafeDTO> schedules = new ArrayList<>();
 		System.out.println("Length " + sc.size());
 		for(Object[] s : sc) {
@@ -115,9 +113,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 			System.out.println("timeSlot " +  s[0]);
 			System.out.println("timeSlotDay " +  s[1]);
 			System.out.println("userName " +  s[2]);
-			ScheduleCafeDTO scdto = new ScheduleCafeDTO((String) s[0],(String)s[1],(String)s[2]);
+			ScheduleCafeDTO scdto = new ScheduleCafeDTO((String) s[0],(String)s[1],(String)s[2],(String) s[3],(String)s[4]);
 			schedules.add(scdto);
-			
+
 		}
 		return new ResponseEntity<>(schedules,HttpStatus.OK);
 	}
@@ -188,6 +186,52 @@ public class ScheduleServiceImpl implements ScheduleService {
 		}
 	}
 
+
+	///Deena
+	@Override
+	public List<PendingScheduleDTO> getPendingSchedules() {
+		List<Object[]> pendingSchedules = scheduleRepository.findPendingSchedules();
+
+		return pendingSchedules.stream()
+				.map(this::mapToPendingScheduleDTO)
+				.collect(Collectors.toList());
+	}
+
+	private PendingScheduleDTO mapToPendingScheduleDTO(Object[] result) {
+		PendingScheduleDTO dto = new PendingScheduleDTO();
+		dto.setUserName((String) result[0]);
+		dto.setCafeName((String) result[1]);
+		dto.setTimeSlot((String) result[2]);
+		dto.setTimeSlotDay((String) result[3]);
+		dto.setScheduleId((int) result[4]);
+		return dto;
+	}
+
+	@Override
+	public boolean acceptSchedule(int scheduleId, String comment) {
+		Optional<Schedule> optionalSchedule = scheduleRepository.findById(scheduleId);
+		if (optionalSchedule.isPresent()) {
+			Schedule schedule = optionalSchedule.get();
+			schedule.setIsAccepted(1);
+			schedule.setRequestComments(comment);// Assuming you have a field in the Schedule entity to mark it as accepted
+			scheduleRepository.save(schedule);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean rejectSchedule(int scheduleId, String comment) {
+		Optional<Schedule> optionalSchedule = scheduleRepository.findById(scheduleId);
+		if (optionalSchedule.isPresent()) {
+			Schedule schedule = optionalSchedule.get();
+			schedule.setIsAccepted(2);
+			schedule.setRequestComments( comment);// Assuming you have a field in the Schedule entity to mark it as rejected
+			scheduleRepository.save(schedule);
+			return true;
+		}
+		return false;
+	}
 
 
 

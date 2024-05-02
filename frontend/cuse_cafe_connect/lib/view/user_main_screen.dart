@@ -27,13 +27,34 @@ class _UserMainScreenState extends State<UserMainScreen> {
       _selectedIndex = index;
     });
   }
+  // Function to handle signout action
+  void _signOut() {
+    // Perform signout actions here, such as clearing user data, navigating to the login screen, etc.
+    // For example:
+    // 1. Clear user data
+    // 2. Navigate to login screen
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          //title: Text('My App'),
+        title: Text('Cuse Cafe Connect'),
+        backgroundColor: Color(0xFFF76900), // Set background color to F76900
+        foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.exit_to_app,
+              color: Colors.white, // Set signout button color to white
+            ),
+            onPressed: () {
+              // _signOut();
+            },
           ),
+        ],
+      ),
+
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -57,7 +78,7 @@ class _UserMainScreenState extends State<UserMainScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Color(0xFFF76900),
         unselectedItemColor:
             Colors.grey, // Optional: Set the color for unselected items
         type: BottomNavigationBarType

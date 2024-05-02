@@ -1,5 +1,6 @@
 package com.example.cuseCafeConnect.services;
 
+import com.example.cuseCafeConnect.models.PendingScheduleDTO;
 import com.example.cuseCafeConnect.models.Schedule;
 
 
@@ -15,6 +16,10 @@ public interface ScheduleService {
     void deleteSchedule(int scheduleID);
 	ResponseEntity<Object> getUserScheduleById(int userId);
 	ResponseEntity<Object> getScheduleByCafeId(int cafeId);
+    boolean requestForShift(int userId, int cafeId, int timeSlotId,String comments);
 
-   boolean requestForShift(int userId, int cafeId, int timeSlotId,String comments);
+    //Deena
+    List<PendingScheduleDTO> getPendingSchedules();
+     boolean acceptSchedule(int scheduleId,String comment);
+     boolean rejectSchedule(int scheduleId, String comment);
 }

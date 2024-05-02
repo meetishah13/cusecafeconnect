@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import shared_preferences package
 import '../controller/stu_cafe_group_controller.dart';
 import '../model/stu_cafe_group.dart';
+import 'GoogleReviewsScreen.dart';
 
 class StuCafeGroupView extends StatefulWidget {
   @override
@@ -28,11 +29,6 @@ class _StuCafeGroupViewState extends State<StuCafeGroupView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Group Management'),
-        //backgroundColor: Color(0xFFF76900),
-        //foregroundColor: Color(0xFF040261),
-      ),
       body: FutureBuilder<Map<String, List<StuCafeGroup>>>(
         future: _getUserIdAndFetchCafes(context),
         builder: (context, snapshot) {
@@ -47,14 +43,13 @@ class _StuCafeGroupViewState extends State<StuCafeGroupView> {
               child: Scaffold(
                 appBar: TabBar(
                   tabs: [
-                    Tab(text: 'User Groups'),
-                    Tab(text: 'Requested Groups'),
-                    Tab(text: 'Join Groups'),
+                    Tab(text: 'Own'),
+                    Tab(text: 'Requested'),
+                    Tab(text: 'Join'),
                   ],
                 ),
                 body: TabBarView(
                   children: [
-                    // First Tab - Cafes by User
                     if (data.containsKey('cafesByUser'))
                       ListView.builder(
                         itemCount: data['cafesByUser']!.length,
@@ -62,7 +57,16 @@ class _StuCafeGroupViewState extends State<StuCafeGroupView> {
                           StuCafeGroup cafe = data['cafesByUser']![index];
                           return GestureDetector(
                             onTap: () {
-                              // Handle card click for 'Cafes by User'
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => GoogleReviewsScreen(
+                                    cafeName: cafe.cafeName,
+                                    cafeLat: cafe.latitude,
+                                    cafeLong: cafe.longitude,
+                                  ),
+                                ),
+                              );
                             },
                             child: _buildCafeCard(cafe),
                           );
@@ -75,26 +79,43 @@ class _StuCafeGroupViewState extends State<StuCafeGroupView> {
                           StuCafeGroup cafe = data['requestedCafe']![index];
                           return GestureDetector(
                             onTap: () {
-                              // Handle card click for 'Cafes by User'
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => GoogleReviewsScreen(
+                                    cafeName: cafe.cafeName,
+                                    cafeLat: cafe.latitude,
+                                    cafeLong: cafe.longitude,
+                                  ),
+                                ),
+                              );
                             },
                             child: _buildCafeCard(cafe),
                           );
                         },
                       ),
-                    // Second Tab - Cafes Not Member
                     if (data.containsKey('cafesNotMember'))
                       ListView.builder(
                         itemCount: data['cafesNotMember']!.length,
                         itemBuilder: (context, index) {
                           StuCafeGroup cafe = data['cafesNotMember']![index];
                           return GestureDetector(
-                            onTap: null,
-                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => GoogleReviewsScreen(
+                                    cafeName: cafe.cafeName,
+                                    cafeLat: cafe.latitude,
+                                    cafeLong: cafe.longitude,
+                                  ),
+                                ),
+                              );
+                            },
                             child: _buildCafeCard(cafe),
                           );
                         },
                       ),
-
                   ],
                 ),
               ),
@@ -173,6 +194,38 @@ class _StuCafeGroupViewState extends State<StuCafeGroupView> {
           ),
           Positioned(
             top: 10.0,
+            right: 65.0, // Adjust the left position as needed
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => GoogleReviewsScreen(
+                      cafeName: cafe.cafeName,
+                      cafeLat: cafe.latitude,
+                      cafeLong: cafe.longitude,
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                padding: EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  color: Color(0xF76900), // Change the color as needed
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                child: Text(
+                  'Reviews', // Change the text as needed
+                  style: TextStyle(
+                    color: Color(0xFFF76900),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 10.0,
             right: 8.0,
             child: GestureDetector(
               onTap: cafe.isAccepted == 2
@@ -217,101 +270,7 @@ class _StuCafeGroupViewState extends State<StuCafeGroupView> {
       ),
     );
   }
-  // Widget _buildCafeCard(StuCafeGroup cafe) {
-  //   return Card(
-  //     elevation: 4.0,
-  //     margin: EdgeInsets.all(8.0),
-  //     shape: RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.circular(10.0),
-  //     ),
-  //     child: Stack(
-  //       children: [
-  //         Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             Padding(
-  //               padding: const EdgeInsets.all(12.0),
-  //               child: Text(
-  //                 cafe.cafeName,
-  //                 style: TextStyle(
-  //                   fontSize: 20,
-  //                   fontWeight: FontWeight.bold,
-  //                   color: Color(0xFF040261),
-  //                 ),
-  //               ),
-  //             ),
-  //             SizedBox(
-  //               height: 200,
-  //               child: GoogleMap(
-  //                 initialCameraPosition: CameraPosition(
-  //                   target: LatLng(
-  //                     cafe.latitude,
-  //                     cafe.longitude,
-  //                   ),
-  //                   zoom: 15,
-  //                 ),
-  //                 markers: {
-  //                   Marker(
-  //                     markerId: MarkerId(cafe.cafeName),
-  //                     position: LatLng(
-  //                       cafe.latitude,
-  //                       cafe.longitude,
-  //                     ),
-  //                   ),
-  //                 },
-  //               ),
-  //             ),
-  //             Padding(
-  //               padding: const EdgeInsets.all(12.0),
-  //               child: Text(
-  //                 'Supervisors: ${cafe.supervisorList.join(', ')}',
-  //                 style: TextStyle(
-  //                   fontSize: 16,
-  //                   color: Color(0xFF040261),
-  //                 ),
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //         Positioned(
-  //           top: 10.0,
-  //           right: 8.0,
-  //           child: GestureDetector(
-  //             onTap: () {
-  //               showDialog(
-  //                 context: context,
-  //                 builder: (context) {
-  //                   return Dialog(
-  //                     child: AddShiftsView(cafeID: cafe.cafeID),
-  //                   );
-  //                 },
-  //               ).then((value) {
-  //                 if (value == true) {
-  //                   // Reload the page if the dialog is closed with success status
-  //                   setState(() {});
-  //                 }
-  //               });
-  //             },
-  //             child: Container(
-  //               padding: EdgeInsets.all(8.0),
-  //               decoration: BoxDecoration(
-  //                 color: Color(0xFF040261),
-  //                 borderRadius: BorderRadius.circular(5.0),
-  //               ),
-  //               child: Text(
-  //                 'Add',
-  //                 style: TextStyle(
-  //                   color: Colors.white,
-  //                   fontWeight: FontWeight.bold,
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+
 
   String getDeviceType() {
     if (Platform.isIOS) {

@@ -1,4 +1,5 @@
 import 'package:cuse_cafe_connect/view/PendingGroupsView.dart';
+import 'package:cuse_cafe_connect/view/PendingScheduleView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class _HeadMainScreenState extends State<HeadMainScreen> {
 
   static List<Widget> _widgetOptions = <Widget>[
     PendingGroupsView(),
-    Text("Sch"),
+    PendingScheduleView(),
     Text("Cafe"),
     Text("Profile"),
   ];
@@ -28,8 +29,21 @@ class _HeadMainScreenState extends State<HeadMainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          //title: Text('My App'),
+        title: Text('Cuse Cafe Connect'),
+        backgroundColor: Color(0xFFF76900),
+        foregroundColor: Colors.white,// Set background color to F76900
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.exit_to_app,
+              color: Colors.white, // Set signout button color to white
+            ),
+            onPressed: () {
+              // _signOut();
+            },
           ),
+        ],
+      ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -53,7 +67,7 @@ class _HeadMainScreenState extends State<HeadMainScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Color(0xFFF76900),
         unselectedItemColor:
             Colors.grey, // Optional: Set the color for unselected items
         type: BottomNavigationBarType

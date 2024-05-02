@@ -36,8 +36,21 @@ class _SupervisorMainScreenState extends State<SupervisorMainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          //title: Text('My App'),
+        title: Text('Cuse Cafe Connect'),
+        backgroundColor: Color(0xFFF76900), // Set background color to F76900
+        foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.exit_to_app,
+              color: Colors.white, // Set signout button color to white
+            ),
+            onPressed: () {
+              // _signOut();
+            },
           ),
+        ],
+      ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -57,7 +70,7 @@ class _SupervisorMainScreenState extends State<SupervisorMainScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Color(0xFFF76900),
         unselectedItemColor:
             Colors.grey, // Optional: Set the color for unselected items
         type: BottomNavigationBarType
