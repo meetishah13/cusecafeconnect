@@ -1,3 +1,4 @@
+import 'package:cuse_cafe_connect/view/CafeView.dart';
 import 'package:cuse_cafe_connect/view/PendingGroupsView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class _HeadMainScreenState extends State<HeadMainScreen> {
   static List<Widget> _widgetOptions = <Widget>[
     PendingGroupsView(),
     Text("Sch"),
-    Text("Cafe"),
+    CafeView(),
     Text("Profile"),
   ];
 

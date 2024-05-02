@@ -115,7 +115,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 			System.out.println("timeSlot " +  s[0]);
 			System.out.println("timeSlotDay " +  s[1]);
 			System.out.println("userName " +  s[2]);
-			ScheduleCafeDTO scdto = new ScheduleCafeDTO((String) s[0],(String)s[1],(String)s[2]);
+			ScheduleCafeDTO scdto = new ScheduleCafeDTO((String) s[0],(String)s[1],(String)s[2],(String) s[3],(String)s[4]);
 			schedules.add(scdto);
 			
 		}

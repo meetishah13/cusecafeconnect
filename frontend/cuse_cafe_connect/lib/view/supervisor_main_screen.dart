@@ -1,5 +1,6 @@
 import 'package:cuse_cafe_connect/controller/TradeBoardController.dart';
 import 'package:cuse_cafe_connect/view/ProfileView.dart';
+import 'package:cuse_cafe_connect/view/ScheduleManagerView.dart';
 import 'package:cuse_cafe_connect/view/TradeBoardManagerView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class _SupervisorMainScreenState extends State<SupervisorMainScreen> {
   void initState() {
     super.initState();
     _widgetOptions = <Widget>[
-      Text("Sch"),
+      ScheduleManagerView(),
       TradeBoardManagerView(tbc),
       ProfileView(),
     ];
