@@ -28,6 +28,10 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 
 
 
+	//Deena APIs
+	@Query("SELECT CONCAT(u.fName, ' ', u.lName) AS UserName, c.cafeName AS CafeName, t.timeSlot AS TimeSlot, t.timeSlotDay AS TimeSlotDay, s.scheduleID AS ScheduleID FROM Schedule s JOIN s.user u JOIN s.cafe c JOIN s.timeslot t WHERE s.isAccepted = 0")
+	List<Object[]> findPendingSchedules();
+
 
 
 

@@ -11,7 +11,7 @@ import java.util.List;
 public interface StuCafeGroupRepository extends JpaRepository<StuCafeGroup, Integer> {
     @Query("SELECT s.cafeID, c.cafeName, c.cafeLat, c.cafeLong FROM StuCafeGroup s JOIN Cafe c ON s.cafeID = c.cafeID WHERE s.userID = :userId AND s.isAccepted = 1")
     List<Object[]> findCafeIdAndNameByUserId(int userId);
-    @Query("SELECT cafe.cafeID, cafe.cafeName, cafe.cafeLat, cafe.cafeLong FROM Cafe cafe WHERE cafe.cafeName!= 'Student' AND cafe.cafeID NOT IN " +
+    @Query("SELECT cafe.cafeID, cafe.cafeName, cafe.cafeLat, cafe.cafeLong FROM Cafe cafe WHERE cafe.cafeName NOT IN('Student','General') AND cafe.cafeID NOT IN " +
             "(SELECT stuCafe.cafeID FROM StuCafeGroup stuCafe WHERE stuCafe.userID = :userId)")
     List<Object[]> findCafesUserIsNotPartOf(int userId);
     List<StuCafeGroup> findByCafeIDAndUserID(int cafeID, int roleID);

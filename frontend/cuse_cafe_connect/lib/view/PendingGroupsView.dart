@@ -25,9 +25,7 @@ class _PendingGroupsViewState extends State<PendingGroupsView> {
         } else {
           List<Map<String, String>> pendingGroups = snapshot.data!;
           return Scaffold(
-            appBar: AppBar(
-              title: Text('Pending Groups'),
-            ),
+
             body: RefreshIndicator(
               onRefresh: _reloadData, // Refresh callback
               child: ListView.builder(

@@ -104,6 +104,7 @@ class _AddShiftsViewState extends State<AddShiftsView> {
       bool success = await StuCafeGroupController().requestShift('ios', userID, widget.cafeID, _selectedShiftId, _commentsController.text);
       if (success) {
         // Shift request submitted successfully
+        // Shift request subappmitted successfully
         Navigator.pop(context, true); // Close the dialog with success status
         setState(() {
           _loadData();
