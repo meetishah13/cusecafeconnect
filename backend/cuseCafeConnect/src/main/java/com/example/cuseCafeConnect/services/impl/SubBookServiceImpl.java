@@ -75,8 +75,12 @@ public class SubBookServiceImpl implements SubBookService {
             Integer scheduleId = (Integer) r[12];
 
             String key = dropDate.toString() + "-" + dropUserId + "-" + cafeId + "-" + scheduleId;
-            if (resultMap.containsKey(key) && pickUserId == userId) {
-                resultMap.remove(key);
+            if (resultMap.containsKey(key)) {
+            	if(pickUserId != null) {
+            		if(pickUserId == userId) {
+            			resultMap.remove(key);
+            		}
+            	}
             } else {
                 if ((int) r[10] == 0) {
 
@@ -125,6 +129,7 @@ public class SubBookServiceImpl implements SubBookService {
 
     @Override
     public ResponseEntity<Object> requestForSub(int subId, int userId) {
+    	System.out.println("In request meth");
         SubBook subBook = subBookRepository.findById(subId).orElse(null);
         if (subBook == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -133,8 +138,10 @@ public class SubBookServiceImpl implements SubBookService {
 
         if (subBook.getPickUpUser() != null) {
             // PickUpUser already set
+        	
             return createNewSubBook(subBook, userId);
         } else {
+        	System.out.println("In request meth setting userId " + userId);
             // PickUpUser not set
             return setPickUpUser(subBook, userId);
         }

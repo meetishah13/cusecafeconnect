@@ -50,7 +50,10 @@ class _CalendarViewState extends State<CalendarView> {
     List<String>? droppedShiftsJson = prefs.getStringList('droppedShifts');
     if (droppedShiftsJson != null) {
       _droppedShifts = droppedShiftsJson
-          .map((shiftJson) => DroppedShift.fromJson(jsonDecode(shiftJson)))
+          .map((shiftJson) => jsonDecode(shiftJson))
+          .where((decodedShift) =>
+              decodedShift['userId'] == userId) // Check if the userId matches
+          .map((filteredShift) => DroppedShift.fromJson(filteredShift))
           .toList();
     }
   }
@@ -196,6 +199,7 @@ class _CalendarViewState extends State<CalendarView> {
     return {
       'scheduleId': droppedShift.scheduleId,
       'selectedDay': droppedShift.selectedDay.toIso8601String(),
+      'userId': userId,
     };
   }
 

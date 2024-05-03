@@ -23,7 +23,6 @@ class _ScheduleManagerViewState extends State<ScheduleManagerView> {
   Future<void> _loadData() async {
     try {
       int cafeId = await sc.getCafeId();
-
       final List<ScheduleManager> schedule =
           await sc.fetchSchedulesByCafeId(cafeId);
 
@@ -47,59 +46,67 @@ class _ScheduleManagerViewState extends State<ScheduleManagerView> {
               child: CircularProgressIndicator(),
             )
           : Padding(
-              padding: EdgeInsets.fromLTRB(0, 30, 0, 0.0), // Add padding
+              padding: EdgeInsets.fromLTRB(0, 30, 0, 0.0),
               child: Navigator(
                 onGenerateRoute: (settings) {
                   return MaterialPageRoute(
                     builder: (context) {
-                      return GridView.builder(
-                        shrinkWrap: true, // Limit height to content size
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 1, // Change to 1 for one card per row
-                          childAspectRatio: 7.0,
-                        ),
-                        itemCount: 5,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              // Navigate to a new screen to display schedules for the selected day
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DailyScheduleView(
-                                    day: index, // Pass the index representing the day
-                                    schedules: _finalCafeSch, // Pass the list of schedules
+                      return SingleChildScrollView(
+                        // Added to allow vertical scrolling
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 1,
+                            childAspectRatio:
+                                4.0, // Adjusted ratio for better fit
+                          ),
+                          itemCount: 5,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DailyScheduleView(
+                                      day: index,
+                                      schedules: _finalCafeSch,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Card(
+                                color: Color(0xFFF76900),
+                                child: Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Flexible(
+                                    // Make column flexible
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          getWeekdayFromIndex(index),
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18.0,
+                                          ),
+                                        ),
+                                        SizedBox(height: 8.0),
+                                        Text(
+                                          'Click to view schedules',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              );
-                            },
-                            child: Card(
-                              color: Color(0xFFF76900),
-                              child: Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      getWeekdayFromIndex(index),
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                                    SizedBox(height: 8.0),
-                                    Text(
-                                      'Click to view schedules',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ],
-                                ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       );
                     },
                   );

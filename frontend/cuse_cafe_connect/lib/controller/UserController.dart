@@ -44,7 +44,7 @@ class UserController {
       await saveUserDataInCache(res.userID, res.roleID);
       handleLoginSuccess(context);
     } else {
-      handleLoginFailure(context, 'Login failed');
+      handleLoginFailure(context, 'Incorrect Email or Password');
     }
   }
 
