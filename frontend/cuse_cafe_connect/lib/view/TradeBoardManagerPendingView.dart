@@ -1,7 +1,9 @@
+import 'dart:io';
+
 import 'package:cuse_cafe_connect/controller/TradeBoardController.dart';
 import 'package:cuse_cafe_connect/model/TradeBoardModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart'; // Import Cupertino widgets
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TradeBoardManagerPendingView extends StatefulWidget {
@@ -136,7 +138,7 @@ class _TradeBoardManagerPendingViewState
                             builder: (BuildContext context) {
                               return CupertinoAlertDialog(
                                 title: Text('Success'),
-                                content: Text('Request successfully done.'),
+                                content: Text('Request successfully accepted.'),
                                 actions: <Widget>[
                                   CupertinoDialogAction(
                                     onPressed: () {
@@ -155,7 +157,7 @@ class _TradeBoardManagerPendingViewState
                             builder: (BuildContext context) {
                               return AlertDialog(
                                 title: Text('Success'),
-                                content: Text('Request successfully done.'),
+                                content: Text('Request successfully accepted.'),
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () {
@@ -197,7 +199,7 @@ class _TradeBoardManagerPendingViewState
                       print('Reject button clicked ' +
                           tradeBoard.subId.toString());
                       // Show reject reason dialog
-                      _showRejectReasonDialog(tradeBoard.subId);
+                      _showRejectReasonDialog(tradeBoard.subId,context);
                     },
                     child: Text('Reject'),
                   ),
@@ -212,43 +214,80 @@ class _TradeBoardManagerPendingViewState
     }
   }
 
-  void _showRejectReasonDialog(int subId) {
+  void _showRejectReasonDialog(int subId, BuildContext context) {
     String rejectReason = '';
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Reject Reason'),
-          content: TextField(
-            onChanged: (value) {
-              rejectReason = value;
-            },
-            decoration:
-                InputDecoration(hintText: 'Enter reason for rejection'),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
+    if (Platform.isIOS) {
+      showCupertinoDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text('Reject Reason'),
+            content: CupertinoTextField(
+              onChanged: (value) {
+                rejectReason = value;
               },
-              child: Text('Cancel'),
+              placeholder: 'Enter reason for rejection',
             ),
-            TextButton(
-              onPressed: () async {
-                // Print the reject reason to the debug console
-                print('Reject reason for subId $subId: $rejectReason');
-                bool success =
-                    await widget.tbc.updateSubStatus(subId, 2, rejectReason);
-                print(success.toString());
-                Navigator.of(context).pop();
-                _loadData();
+            actions: <Widget>[
+              CupertinoDialogAction(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Cancel'),
+              ),
+              CupertinoDialogAction(
+                onPressed: () async {
+                  // Print the reject reason to the debug console
+                  print('Reject reason for subId $subId: $rejectReason');
+                  bool success =
+                      await widget.tbc.updateSubStatus(subId, 2, rejectReason);
+                  print(success.toString());
+                  Navigator.of(context).pop();
+                  _loadData();
+                },
+                child: Text('Save'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Reject Reason'),
+            content: TextField(
+              onChanged: (value) {
+                rejectReason = value;
               },
-              child: Text('Save'),
+              decoration:
+                  InputDecoration(hintText: 'Enter reason for rejection'),
             ),
-          ],
-        );
-      },
-    );
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  // Print the reject reason to the debug console
+                  print('Reject reason for subId $subId: $rejectReason');
+                  bool success =
+                      await widget.tbc.updateSubStatus(subId, 2, rejectReason);
+                  print(success.toString());
+                  Navigator.of(context).pop();
+                  _loadData();
+                },
+                child: Text('Save'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 }
