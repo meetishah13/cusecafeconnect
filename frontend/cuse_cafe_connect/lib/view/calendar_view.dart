@@ -379,6 +379,7 @@ class _CalendarViewState extends State<CalendarView> {
                             ),
                           );
                         }
+
                         return const SizedBox.shrink();
                       },
                     ),
@@ -401,29 +402,32 @@ class _CalendarViewState extends State<CalendarView> {
                 //     ),
                 //   ),
                 const SizedBox(height: 20),
-                Text(
-                  'Registered shift days for every week:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
                 const SizedBox(height: 10),
                 Wrap(
-                  spacing: 10, // Adjust the gap between boxes
-                  children: _schedules
-                      .where((schedule) => schedule.type == ScheduleType.normal)
-                      .map((schedule) => Container(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 10),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFF76900),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Text(
-                              schedule.timeSlotDay,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ))
-                      .toList(),
-                )
+                  spacing: 10,
+                  children: [
+                    Text(
+                      'You are working with:',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    ..._schedules
+                        .map((schedule) => schedule.cafeName)
+                        .toSet()
+                        .toList()
+                        .map((cafeName) => Container(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 1, horizontal: 10),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFF76900),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text(
+                                cafeName,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ))
+                  ],
+                ),
               ],
             )
           : const Center(
