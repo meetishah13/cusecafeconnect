@@ -13,12 +13,12 @@ void main() async {
 }
 
 Future<void> setPlatformInCache() async {
-  // SharedPreferences prefs = await SharedPreferences.getInstance();
-  // if (Platform.isAndroid) {
-  //   await prefs.setString('platform', 'android');
-  // } else if (Platform.isIOS) {
-  //   await prefs.setString('platform', 'ios');
-  // }
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (Platform.isAndroid) {
+    await prefs.setString('platform', 'android');
+  } else if (Platform.isIOS) {
+    await prefs.setString('platform', 'ios');
+  }
 }
 
 class MyApp extends StatelessWidget {

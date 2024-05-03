@@ -13,9 +13,13 @@ class ScheduleController {
   final ScheduleService ss = ScheduleService();
   final UserService us = UserService();
 
+
+
   Future<List<PendingSchedule>> fetchPendingSchedules() async {
+    final SharedPreferences _pref = await SharedPreferences.getInstance();
+    String? device = _pref.getString('platform');
     final response = await http
-        .get(Uri.parse('http://localhost:8080/api/schedules/pendingSchedules'));
+        .get(Uri.parse('http://$device:8080/api/schedules/pendingSchedules'));
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = json.decode(response.body);
       return jsonData.map((e) => PendingSchedule.fromJson(e)).toList();
@@ -25,9 +29,11 @@ class ScheduleController {
   }
 
   Future<bool> acceptSchedule(int scheduleId, String comment) async {
+    final SharedPreferences _pref = await SharedPreferences.getInstance();
+    String? device = _pref.getString('platform');
     try {
       final response = await http.put(Uri.parse(
-          'http://localhost:8080/api/schedules/accept/$scheduleId/$comment'));
+          'http://$device:8080/api/schedules/accept/$scheduleId/$comment'));
       return response.statusCode == 200;
     } catch (e) {
       print('Error accepting schedule: $e');
@@ -40,9 +46,11 @@ class ScheduleController {
   }
 
   Future<bool> rejectSchedule(int scheduleId, String comment) async {
+    final SharedPreferences _pref = await SharedPreferences.getInstance();
+    String? device = _pref.getString('platform');
     try {
       final response = await http.put(Uri.parse(
-          'http://localhost:8080/api/schedules/reject/$scheduleId/$comment'));
+          'http://$device:8080/api/schedules/reject/$scheduleId/$comment'));
       return response.statusCode == 200;
     } catch (e) {
       print('Error rejecting schedule: $e');

@@ -1,10 +1,14 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:cuse_cafe_connect/model/TradeBoardModel.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TradeBoardService {
   Future<List<TradeBoardModel>> fetchSubBooks(int userId) async {
-    String apiUrl = 'http://localhost:8080/api/subBooks/filter/$userId';
+    final SharedPreferences _pref = await SharedPreferences.getInstance();
+    String? deviceType = _pref.getString('platform');
+    String localhost = (deviceType == 'ios') ? 'localhost' : '10.0.2.2';
+    String apiUrl = 'http://$localhost:8080/api/subBooks/filter/$userId';
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
@@ -19,8 +23,11 @@ class TradeBoardService {
   }
 
   Future<List<TradeBoardModel>> fetchManagerSubBook(int userId) async {
+    final SharedPreferences _pref = await SharedPreferences.getInstance();
+    String? deviceType = _pref.getString('platform');
+    String localhost = (deviceType == 'ios') ? 'localhost' : '10.0.2.2';
     String apiUrl =
-        'http://localhost:8080/api/subBooks/$userId/getSubBookSchedule';
+        'http://$localhost:8080/api/subBooks/$userId/getSubBookSchedule';
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
@@ -35,8 +42,11 @@ class TradeBoardService {
   }
 
   Future<List<TradeBoardModel>> fetchRequestedSubBooks(int userId) async {
+    final SharedPreferences _pref = await SharedPreferences.getInstance();
+    String? deviceType = _pref.getString('platform');
+    String localhost = (deviceType == 'ios') ? 'localhost' : '10.0.2.2';
     String apiUrl =
-        'http://localhost:8080/api/subBooks/getRequestedSub/$userId';
+        'http://$localhost:8080/api/subBooks/getRequestedSub/$userId';
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
@@ -51,8 +61,11 @@ class TradeBoardService {
   }
 
   Future<bool> requestForSub(int subId, int userId) async {
+    final SharedPreferences _pref = await SharedPreferences.getInstance();
+    String? deviceType = _pref.getString('platform');
+    String localhost = (deviceType == 'ios') ? 'localhost' : '10.0.2.2';
     String apiUrl =
-        'http://localhost:8080/api/subBooks/$subId/requestForSub/$userId';
+        'http://$localhost:8080/api/subBooks/$subId/requestForSub/$userId';
 
     try {
       final response = await http.post(Uri.parse(apiUrl));
@@ -70,8 +83,11 @@ class TradeBoardService {
   }
 
   Future<bool> updateSubStatus(int subId, int status, String message) async {
+    final SharedPreferences _pref = await SharedPreferences.getInstance();
+    String? deviceType = _pref.getString('platform');
+    String localhost = (deviceType == 'ios') ? 'localhost' : '10.0.2.2';
     String apiUrl =
-        'http://localhost:8080/api/subBooks/$subId/updateSubStatus/$status';
+        'http://$localhost:8080/api/subBooks/$subId/updateSubStatus/$status';
     final headers = <String, String>{
       'Content-Type': 'application/json',
     };

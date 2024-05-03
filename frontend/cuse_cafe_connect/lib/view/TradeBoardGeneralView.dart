@@ -122,13 +122,10 @@ class _TradeBoardGeneralViewState extends State<TradeBoardGeneralView> {
                             return CupertinoAlertDialog(
                               title: Text(
                                 'Success',
-                                style: TextStyle(color: Colors.white),
                               ),
-                              content: Container(
-                                color: Colors.orange, // Background color
+                              content: Container(// Background color
                                 child: Text(
                                   'Request successfully done.',
-                                  style: TextStyle(color: Colors.white),
                                 ),
                               ),
                               actions: <Widget>[
@@ -139,7 +136,6 @@ class _TradeBoardGeneralViewState extends State<TradeBoardGeneralView> {
                                   },
                                   child: Text(
                                     'OK',
-                                    style: TextStyle(color: Colors.white),
                                   ),
                                 ),
                               ],
@@ -153,13 +149,10 @@ class _TradeBoardGeneralViewState extends State<TradeBoardGeneralView> {
                             return AlertDialog(
                               title: Text(
                                 'Success',
-                                style: TextStyle(color: Colors.white),
                               ),
                               content: Container(
-                                color: Colors.orange, // Background color
                                 child: Text(
                                   'Request successfully done.',
-                                  style: TextStyle(color: Colors.white),
                                 ),
                               ),
                               actions: <Widget>[

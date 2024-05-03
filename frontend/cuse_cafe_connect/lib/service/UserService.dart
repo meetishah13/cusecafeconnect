@@ -3,13 +3,17 @@ import 'dart:io';
 import 'package:cuse_cafe_connect/model/UserModel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
   Future<UserModel?> loginUser(String username, String password) async {
+    final SharedPreferences _pref = await SharedPreferences.getInstance();
+    String? deviceType = _pref.getString('platform');
+    String localhost = (deviceType == 'ios') ? 'localhost' : '10.0.2.2';
     try {
       final response = await http.get(
         Uri.parse(
-            'http://localhost:8080/api/users/login?emailId=$username&password=$password'),
+            'http://$localhost:8080/api/users/login?emailId=$username&password=$password'),
       );
       if (response.statusCode == 200) {
         Map<String, dynamic> responseData = json.decode(response.body);
@@ -31,8 +35,11 @@ class UserService {
 
   Future<UserModel?> getProfileDetails(int userId) async {
     print(userId.toString());
+    final SharedPreferences _pref = await SharedPreferences.getInstance();
+    String? deviceType = _pref.getString('platform');
+    String localhost = (deviceType == 'ios') ? 'localhost' : '10.0.2.2';
     final url =
-        Uri.parse('http://localhost:8080/api/users/$userId/getUserDetails');
+        Uri.parse('http://$localhost:8080/api/users/$userId/getUserDetails');
 
     try {
       final response = await http.get(url);
@@ -60,7 +67,10 @@ class UserService {
     File? photoPath,
   ) async {
     try {
-      var uri = Uri.parse('http://localhost:8080/api/users/editUser');
+      final SharedPreferences _pref = await SharedPreferences.getInstance();
+      String? deviceType = _pref.getString('platform');
+      String localhost = (deviceType == 'ios') ? 'localhost' : '10.0.2.2';
+      var uri = Uri.parse('http://$localhost:8080/api/users/editUser');
 
       var request = http.MultipartRequest('PUT', uri)
         ..fields['userID'] = userID.toString()
@@ -103,7 +113,10 @@ class UserService {
 
   Future<bool> signupUser(String suid, String firstName, String lastName,
       String email, String password, String phoneNumber) async {
-    String url = 'http://localhost:8080/api/users/addUser';
+    final SharedPreferences _pref = await SharedPreferences.getInstance();
+    String? deviceType = _pref.getString('platform');
+    String localhost = (deviceType == 'ios') ? 'localhost' : '10.0.2.2';
+    String url = 'http://$localhost:8080/api/users/addUser';
     Map<String, dynamic> requestBody = {
       'userID': suid,
       'userEmail': email,

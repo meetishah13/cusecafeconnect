@@ -4,6 +4,8 @@ import 'package:cuse_cafe_connect/model/Shift.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class DropShiftScreen extends StatefulWidget {
   final Schedule schedule;
   final DateTime selectedDay;
@@ -40,7 +42,10 @@ class _DropShiftScreenState extends State<DropShiftScreen> {
   final TextEditingController _commentsController = TextEditingController();
   bool _areYouSure = false;
   Future<void> _dropShift() async {
-    final url = Uri.parse('http://localhost:8080/api/schedules/dropshift');
+    final SharedPreferences _pref = await SharedPreferences.getInstance();
+    String? deviceType = _pref.getString('platform');
+    String localhost = (deviceType == 'ios') ? 'localhost' : '10.0.2.2';
+    final url = Uri.parse('http://$localhost:8080/api/schedules/dropshift');
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({
       'scheduleId': widget.scheduleId,
