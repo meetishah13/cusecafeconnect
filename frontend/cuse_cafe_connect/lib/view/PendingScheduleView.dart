@@ -23,40 +23,44 @@ class _PendingScheduleViewState extends State<PendingScheduleView> {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else {
           List<PendingSchedule> pendingSchedules = snapshot.data!;
-          return Scaffold(
-            body: ListView.builder(
-              itemCount: pendingSchedules.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  margin: EdgeInsets.all(8.0),
-                  child: ListTile(
-                    title: Text(pendingSchedules[index].userName),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Cafe Name: ${pendingSchedules[index].cafeName}'),
-                        Text('Time Slot: ${pendingSchedules[index].timeSlot}'),
-                        Text('Day: ${pendingSchedules[index].timeSlotDay}'),
-                      ],
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.check_circle, color: Colors.green),
-                          onPressed: () => _showCommentDialog(context, true, pendingSchedules[index].scheduleId),
+          return pendingSchedules.isEmpty
+              ? Center(
+                  child: Text('No pending request for schedules'),
+                )
+              : Scaffold(
+                  body: ListView.builder(
+                    itemCount: pendingSchedules.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Card(
+                        margin: EdgeInsets.all(8.0),
+                        child: ListTile(
+                          title: Text(pendingSchedules[index].userName),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Cafe Name: ${pendingSchedules[index].cafeName}'),
+                              Text('Time Slot: ${pendingSchedules[index].timeSlot}'),
+                              Text('Day: ${pendingSchedules[index].timeSlotDay}'),
+                            ],
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.check_circle, color: Colors.green),
+                                onPressed: () => _showCommentDialog(context, true, pendingSchedules[index].scheduleId),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.cancel, color: Colors.red),
+                                onPressed: () => _showCommentDialog(context, false, pendingSchedules[index].scheduleId),
+                              ),
+                            ],
+                          ),
                         ),
-                        IconButton(
-                          icon: Icon(Icons.cancel, color: Colors.red),
-                          onPressed: () => _showCommentDialog(context, false, pendingSchedules[index].scheduleId),
-                        ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
                 );
-              },
-            ),
-          );
         }
       },
     );
@@ -113,7 +117,6 @@ class _PendingScheduleViewState extends State<PendingScheduleView> {
       });
     }
   }
-
 
   void _showSnackbar(BuildContext context, String message, Color color) {
     ScaffoldMessenger.of(context).showSnackBar(

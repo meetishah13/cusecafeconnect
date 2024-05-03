@@ -1,9 +1,11 @@
 import 'package:cuse_cafe_connect/view/CafeView.dart';
+import 'package:cuse_cafe_connect/view/LoginView.dart';
 import 'package:cuse_cafe_connect/view/PendingGroupsView.dart';
 import 'package:cuse_cafe_connect/view/PendingScheduleView.dart';
 import 'package:cuse_cafe_connect/view/ProfileView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class HeadMainScreen extends StatefulWidget {
@@ -27,6 +29,18 @@ class _HeadMainScreenState extends State<HeadMainScreen> {
     });
   }
 
+  Future<void> _signOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('roleId');
+    await prefs.remove('userId');
+
+    // Navigate to LoginView
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginView()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,9 +54,7 @@ class _HeadMainScreenState extends State<HeadMainScreen> {
               Icons.exit_to_app,
               color: Colors.white, // Set signout button color to white
             ),
-            onPressed: () {
-              // _signOut();
-            },
+            onPressed: _signOut,
           ),
         ],
       ),

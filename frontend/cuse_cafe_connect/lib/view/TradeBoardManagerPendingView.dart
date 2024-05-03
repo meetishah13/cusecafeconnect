@@ -29,10 +29,10 @@ class _TradeBoardManagerPendingViewState
       SharedPreferences prefs = await SharedPreferences.getInstance();
       int userId = prefs.getInt('userId') ?? 6348;
       final List<TradeBoardModel> subBooks =
-      await widget.tbc.fetchManagerSubBook(userId);
+          await widget.tbc.fetchManagerSubBook(userId);
       List<TradeBoardModel> finalSubBook = [];
-      for(TradeBoardModel tbm in subBooks){
-        if(tbm.status == 'In Review'){
+      for (TradeBoardModel tbm in subBooks) {
+        if (tbm.status == 'In Review') {
           finalSubBook.add(tbm);
         }
       }
@@ -53,8 +53,8 @@ class _TradeBoardManagerPendingViewState
     return Scaffold(
       body: _isLoading
           ? Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : _buildCards(),
     );
   }
@@ -83,6 +83,7 @@ class _TradeBoardManagerPendingViewState
 
     if (tradeBoard.status == 'In Review') {
       return Card(
+        color: Color(0xFFF76900),
         child: Padding(
           padding: EdgeInsets.all(8.0),
           child: Column(
@@ -92,6 +93,7 @@ class _TradeBoardManagerPendingViewState
               Text(
                 'Cafe Name: ${tradeBoard.cafeName}',
                 style: TextStyle(
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 18.0,
                 ),
@@ -99,18 +101,22 @@ class _TradeBoardManagerPendingViewState
               SizedBox(height: 8.0),
               Text(
                 'Timing: ${tradeBoard.timeSlot}',
+                style: TextStyle(color: Colors.white),
               ),
               SizedBox(height: 8.0),
               Text(
                 'Date: $formattedDate (${tradeBoard.timeSlotDay})',
+                style: TextStyle(color: Colors.white),
               ),
               SizedBox(height: 8.0),
               Text(
                 'Drop User: ${tradeBoard.dropUserName}',
+                style: TextStyle(color: Colors.white),
               ),
               SizedBox(height: 8.0),
               Text(
                 'Pickup User: ${tradeBoard.pickUpUserName}',
+                style: TextStyle(color: Colors.white),
               ),
               SizedBox(height: 8.0),
               Row(
@@ -196,7 +202,8 @@ class _TradeBoardManagerPendingViewState
             onChanged: (value) {
               rejectReason = value;
             },
-            decoration: InputDecoration(hintText: 'Enter reason for rejection'),
+            decoration:
+                InputDecoration(hintText: 'Enter reason for rejection'),
           ),
           actions: <Widget>[
             TextButton(
@@ -210,7 +217,7 @@ class _TradeBoardManagerPendingViewState
                 // Print the reject reason to the debug console
                 print('Reject reason for subId $subId: $rejectReason');
                 bool success =
-                await widget.tbc.updateSubStatus(subId, 2, rejectReason);
+                    await widget.tbc.updateSubStatus(subId, 2, rejectReason);
                 print(success.toString());
                 Navigator.of(context).pop();
                 _loadData();

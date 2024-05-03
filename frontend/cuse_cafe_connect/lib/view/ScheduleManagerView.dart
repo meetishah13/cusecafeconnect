@@ -1,10 +1,8 @@
 import 'package:cuse_cafe_connect/controller/ScheduleController.dart';
 import 'package:cuse_cafe_connect/controller/UserController.dart';
-import 'package:cuse_cafe_connect/model/ScheduleManager.dart'; // Ensure this import is correct
-import 'package:cuse_cafe_connect/model/UserModel.dart';
-import 'package:cuse_cafe_connect/service/UserService.dart';
+import 'package:cuse_cafe_connect/model/ScheduleManager.dart';
+import 'package:cuse_cafe_connect/view/DailyScheduleView.dart';
 import 'package:flutter/material.dart';
-import 'package:grouped_list/grouped_list.dart';
 
 class ScheduleManagerView extends StatefulWidget {
   @override
@@ -48,69 +46,84 @@ class _ScheduleManagerViewState extends State<ScheduleManagerView> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : GroupedListView<dynamic, String>(
-              elements: _finalCafeSch,
-              groupBy: (element) =>
-                  _getWeekdayIndex(element.timeSlotDay).toString(), // Convert int to String
-              groupComparator: (group1, group2) =>
-                  _getWeekdayIndex(group1).compareTo(_getWeekdayIndex(group2)),
-              groupSeparatorBuilder: (String groupByValue) => Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(getWeekdayFromIndex(int.parse(groupByValue))),
+          : Padding(
+              padding: EdgeInsets.fromLTRB(0, 30, 0, 0.0), // Add padding
+              child: Navigator(
+                onGenerateRoute: (settings) {
+                  return MaterialPageRoute(
+                    builder: (context) {
+                      return GridView.builder(
+                        shrinkWrap: true, // Limit height to content size
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 1, // Change to 1 for one card per row
+                          childAspectRatio: 7.0,
+                        ),
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              // Navigate to a new screen to display schedules for the selected day
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DailyScheduleView(
+                                    day: index, // Pass the index representing the day
+                                    schedules: _finalCafeSch, // Pass the list of schedules
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Card(
+                              color: Color(0xFFF76900),
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    // Your widget content here
+                                    Text(
+                                      getWeekdayFromIndex(index),
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18.0,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8.0),
+                                    Text(
+                                      'Click to view schedules',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
               ),
-              itemBuilder: (context, dynamic element) {
-                ScheduleManager schedule = element;
-                return ListTile(
-                  title: Text(schedule.timeSlot),
-                  subtitle:
-                      Text('User: ${schedule.userName ?? 'Not assigned'}'),
-                );
-              },
-              order: GroupedListOrder.ASC,
             ),
     );
   }
 
   String getWeekdayFromIndex(int index) {
-  switch (index) {
-    case 0:
-      return 'Monday';
-    case 1:
-      return 'Tuesday';
-    case 2:
-      return 'Wednesday';
-    case 3:
-      return 'Thursday';
-    case 4:
-      return 'Friday';
-    case 5:
-      return 'Saturday';
-    case 6:
-      return 'Sunday';
-    default:
-      return ''; // Handle out-of-range values
-  }
-}
-
-
-  int _getWeekdayIndex(String? weekday) {
-    switch (weekday) {
-      case 'Monday':
-        return 0;
-      case 'Tuesday':
-        return 1;
-      case 'Wednesday':
-        return 2;
-      case 'Thursday':
-        return 3;
-      case 'Friday':
-        return 4;
-      case 'Saturday':
-        return 5;
-      case 'Sunday':
-        return 6;
+    switch (index) {
+      case 0:
+        return 'Monday';
+      case 1:
+        return 'Tuesday';
+      case 2:
+        return 'Wednesday';
+      case 3:
+        return 'Thursday';
+      case 4:
+        return 'Friday';
       default:
-        return 7; // For unknown or null values
+        return ''; // Handle out-of-range values
     }
   }
 }

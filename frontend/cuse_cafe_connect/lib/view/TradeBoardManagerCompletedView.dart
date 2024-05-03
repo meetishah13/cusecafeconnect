@@ -9,10 +9,12 @@ class TradeBoardManagerCompletedView extends StatefulWidget {
   TradeBoardManagerCompletedView(this.tbc);
 
   @override
-  _TradeBoardManagerCompletedViewState createState() => _TradeBoardManagerCompletedViewState();
+  _TradeBoardManagerCompletedViewState createState() =>
+      _TradeBoardManagerCompletedViewState();
 }
 
-class _TradeBoardManagerCompletedViewState extends State<TradeBoardManagerCompletedView> {
+class _TradeBoardManagerCompletedViewState
+    extends State<TradeBoardManagerCompletedView> {
   bool _isLoading = true;
   List<TradeBoardModel> _subBooks = [];
 
@@ -27,10 +29,10 @@ class _TradeBoardManagerCompletedViewState extends State<TradeBoardManagerComple
       SharedPreferences prefs = await SharedPreferences.getInstance();
       int userId = prefs.getInt('userId') ?? 3;
       final List<TradeBoardModel> subBooks =
-      await widget.tbc.fetchManagerSubBook(userId);
+          await widget.tbc.fetchManagerSubBook(userId);
       List<TradeBoardModel> finalSubBook = [];
-      for(TradeBoardModel tbm in subBooks){
-        if(tbm.status != 'In Review'){
+      for (TradeBoardModel tbm in subBooks) {
+        if (tbm.status != 'In Review') {
           finalSubBook.add(tbm);
         }
       }
@@ -51,8 +53,8 @@ class _TradeBoardManagerCompletedViewState extends State<TradeBoardManagerComple
     return Scaffold(
       body: _isLoading
           ? Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : _buildCards(),
     );
   }
@@ -84,13 +86,14 @@ class _TradeBoardManagerCompletedViewState extends State<TradeBoardManagerComple
 
     if (tradeBoard.status == 'Accepted') {
       iconData = Icons.check_circle;
-      iconColor = Colors.green;
+      iconColor = Colors.white;
     } else if (tradeBoard.status == 'Rejected') {
       iconData = Icons.cancel;
-      iconColor = Colors.red;
+      iconColor = Colors.white;
     }
 
     return Card(
+      color: Color(0xFFF76900),
       child: Padding(
         padding: EdgeInsets.all(8.0),
         child: Column(
@@ -100,6 +103,7 @@ class _TradeBoardManagerCompletedViewState extends State<TradeBoardManagerComple
             Text(
               'Cafe Name: ${tradeBoard.cafeName}',
               style: TextStyle(
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 18.0,
               ),
@@ -107,18 +111,30 @@ class _TradeBoardManagerCompletedViewState extends State<TradeBoardManagerComple
             SizedBox(height: 8.0),
             Text(
               'Timing: ${tradeBoard.timeSlot}',
+              style: TextStyle(
+                color: Colors.white,
+              ),
             ),
             SizedBox(height: 8.0),
             Text(
               'Date: $formattedDate (${tradeBoard.timeSlotDay})',
+              style: TextStyle(
+                color: Colors.white,
+              ),
             ),
             SizedBox(height: 8.0),
             Text(
               'Drop User: ${tradeBoard.dropUserName}',
+              style: TextStyle(
+                color: Colors.white,
+              ),
             ),
             SizedBox(height: 8.0),
             Text(
               'Pickup User: ${tradeBoard.pickUpUserName}',
+              style: TextStyle(
+                color: Colors.white,
+              ),
             ),
             SizedBox(height: 8.0),
             if (iconData != null && iconColor != null) ...[
@@ -128,112 +144,9 @@ class _TradeBoardManagerCompletedViewState extends State<TradeBoardManagerComple
                 size: 40,
               ),
             ],
-            if (tradeBoard.status == 'In Review') ...[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: () async {
-                      print('Accept button clicked ' +
-                          tradeBoard.subId.toString());
-                      bool success = await widget.tbc
-                          .updateSubStatus(tradeBoard.subId, 1, "");
-                      if (success) {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Success'),
-                              content: Text('Request successfully done.'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    _loadData();
-                                  },
-                                  child: Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Error'),
-                              content: Text(
-                                  'There was an error. Please try again later.'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }
-                    },
-                    child: Text('Accept'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      print('Reject button clicked ' +
-                          tradeBoard.subId.toString());
-                      // Show reject reason dialog
-                      _showRejectReasonDialog(tradeBoard.subId);
-                    },
-                    child: Text('Reject'),
-                  ),
-                ],
-              ),
-            ],
           ],
         ),
       ),
-    );
-  }
-
-  void _showRejectReasonDialog(int subId) {
-    String rejectReason = '';
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Reject Reason'),
-          content: TextField(
-            onChanged: (value) {
-              rejectReason = value;
-            },
-            decoration: InputDecoration(hintText: 'Enter reason for rejection'),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                // Print the reject reason to the debug console
-                print('Reject reason for subId $subId: $rejectReason');
-                bool success = await widget.tbc
-                    .updateSubStatus(subId, 2, rejectReason);
-                print(success.toString());
-                Navigator.of(context).pop();
-                _loadData();
-              },
-              child: Text('Save'),
-            ),
-          ],
-        );
-      },
     );
   }
 }

@@ -16,84 +16,183 @@ class _SignUpViewState extends State<SignUpView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Please Fill in the Details'),
+        title: Text("Enter the details"),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextFormField(
-              controller: _controller.suidController,
-              decoration: InputDecoration(labelText: '9 Digit SUID'),
-              keyboardType: TextInputType.number,
-            ),
-            SizedBox(height: 10.0),
-            TextFormField(
-              controller: _controller.firstNameController,
-              decoration: InputDecoration(labelText: 'First Name'),
-            ),
-            SizedBox(height: 10.0),
-            TextFormField(
-              controller: _controller.lastNameController,
-              decoration: InputDecoration(labelText: 'Last Name'),
-            ),
-            SizedBox(height: 10.0),
-            TextFormField(
-              controller: _controller.emailController,
-              decoration: InputDecoration(labelText: 'Email ID'),
-              keyboardType: TextInputType.emailAddress,
-            ),
-            SizedBox(height: 10.0),
-            TextFormField(
-              controller: _controller.passwordSignUpController,
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            SizedBox(height: 10.0),
-            TextFormField(
-              controller: _controller.reconfirmPasswordController,
-              decoration: InputDecoration(labelText: 'Reconfirm Password'),
-              obscureText: true,
-            ),
-            SizedBox(height: 10.0),
-            TextFormField(
-              controller: _controller.phoneNumberController,
-              decoration: InputDecoration(labelText: 'Phone Number'),
-              keyboardType: TextInputType.phone,
-            ),
-            SizedBox(height: 20.0),
-            Text(
-              _controller.errorMessage,
-              style: TextStyle(color: Colors.red),
-            ),
-            SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: () async {
-                bool res = await _controller.signUp();
-                if (!res) {
-                  setState(() {});
-                } else {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginView()),
-                  );
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFF76900),
-                shape: RoundedRectangleBorder(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: Image.asset(
+                  'assets/login_image.png', // Replace with your image path
+                  height: 250, // Adjust the height as needed
+                ),
+              ),
+              SizedBox(height: 7.0),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(30),
                 ),
-              ),
-              child: Text(
-                'Sign Up',
-                style: TextStyle(
-                  color: Colors.white, // Set the text color to white
+                child: TextField(
+                  controller: _controller.suidController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: '9 Digit SUID',
+                    alignLabelWithHint: true,
+                    contentPadding: EdgeInsets.only(left: 16),
+                  ),
+                  textAlign: TextAlign.left,
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: 7.0),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: TextField(
+                  controller: _controller.firstNameController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'First Name',
+                    alignLabelWithHint: true,
+                    contentPadding: EdgeInsets.only(left: 16),
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              SizedBox(height: 7.0),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: TextField(
+                  controller: _controller.lastNameController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Last Name',
+                    alignLabelWithHint: true,
+                    contentPadding: EdgeInsets.only(left: 16),
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              SizedBox(height: 7.0),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: TextField(
+                  controller: _controller.emailController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Email ID',
+                    alignLabelWithHint: true,
+                    contentPadding: EdgeInsets.only(left: 16),
+                  ),
+                  keyboardType: TextInputType.emailAddress,
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              SizedBox(height: 7.0),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: TextField(
+                  controller: _controller.passwordSignUpController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Password',
+                    alignLabelWithHint: true,
+                    contentPadding: EdgeInsets.only(left: 16),
+                  ),
+                  obscureText: true,
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              SizedBox(height: 7.0),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: TextField(
+                  controller: _controller.reconfirmPasswordController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Reconfirm Password',
+                    alignLabelWithHint: true,
+                    contentPadding: EdgeInsets.only(left: 16),
+                  ),
+                  obscureText: true,
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              SizedBox(height: 7.0),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: TextField(
+                  controller: _controller.phoneNumberController,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Phone Number',
+                    alignLabelWithHint: true,
+                    contentPadding: EdgeInsets.only(left: 16),
+                  ),
+                  keyboardType: TextInputType.phone,
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              SizedBox(height: 7.0),
+              Text(
+                _controller.errorMessage,
+                style: TextStyle(color: Colors.red),
+              ),
+              SizedBox(height: 7.0),
+              ElevatedButton(
+                onPressed: () async {
+                  bool res = await _controller.signUp();
+                  if (!res) {
+                    setState(() {});
+                  } else {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginView()),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFF76900),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+                child: Text(
+                  'Sign Up',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

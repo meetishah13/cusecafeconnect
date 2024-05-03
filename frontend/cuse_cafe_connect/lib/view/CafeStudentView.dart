@@ -67,52 +67,61 @@ class _CafeStudentViewState extends State<CafeStudentView> {
               : ListView.builder(
                   itemCount: _finalCafeSch.length,
                   itemBuilder: (context, index) {
-                    return ListTile(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _finalCafeSch[index].userName ?? '',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                    return Card(
+                      color: Color(0xFFF76900),
+                      elevation: 3,
+                      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      child: ListTile(
+                        contentPadding: EdgeInsets.all(16),
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _finalCafeSch[index].userName ?? '',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          Row(
-                            children: [
-                              Icon(Icons.email),
-                              SizedBox(width: 5),
-                              Text(
-                                _finalCafeSch[index].emailId ?? '',
-                                style: TextStyle(
-                                  fontSize: 14,
+                            SizedBox(height: 8),
+                            Row(
+                              children: [
+                                Icon(Icons.email,color: Colors.white,),
+                                SizedBox(width: 5),
+                                Text(
+                                  _finalCafeSch[index].emailId ?? '',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Icon(Icons.phone),
-                              SizedBox(width: 5),
-                              Text(
-                                _finalCafeSch[index].phoneNo ?? '',
-                                style: TextStyle(
-                                  fontSize: 14,
+                              ],
+                            ),
+                            SizedBox(height: 8),
+                            Row(
+                              children: [
+                                Icon(Icons.phone,color: Colors.white,),
+                                SizedBox(width: 5),
+                                Text(
+                                  _finalCafeSch[index].phoneNo ?? '',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.blue,
-                        child: Text(
-                          _finalCafeSch[index].userName?[0] ?? '',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                              ],
+                            ),
+                          ],
+                        ),
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.blue,
+                          child: Text(
+                            _finalCafeSch[index].userName?[0] ?? '',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),

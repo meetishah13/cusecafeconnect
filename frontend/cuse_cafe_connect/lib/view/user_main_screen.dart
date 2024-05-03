@@ -1,8 +1,10 @@
+import 'package:cuse_cafe_connect/view/LoginView.dart';
 import 'package:cuse_cafe_connect/view/ProfileView.dart';
 import 'package:cuse_cafe_connect/view/TradeBoardHome.dart';
 import 'package:cuse_cafe_connect/view/stu_cafe_group_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'calendar_view.dart';
 
@@ -27,12 +29,16 @@ class _UserMainScreenState extends State<UserMainScreen> {
       _selectedIndex = index;
     });
   }
-  // Function to handle signout action
-  void _signOut() {
-    // Perform signout actions here, such as clearing user data, navigating to the login screen, etc.
-    // For example:
-    // 1. Clear user data
-    // 2. Navigate to login screen
+  Future<void> _signOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('roleId');
+    await prefs.remove('userId');
+
+    // Navigate to LoginView
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginView()),
+    );
   }
 
   @override
@@ -48,9 +54,7 @@ class _UserMainScreenState extends State<UserMainScreen> {
               Icons.exit_to_app,
               color: Colors.white, // Set signout button color to white
             ),
-            onPressed: () {
-              // _signOut();
-            },
+            onPressed: _signOut,
           ),
         ],
       ),

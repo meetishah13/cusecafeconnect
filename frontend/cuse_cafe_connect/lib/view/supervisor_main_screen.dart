@@ -1,9 +1,11 @@
 import 'package:cuse_cafe_connect/controller/TradeBoardController.dart';
+import 'package:cuse_cafe_connect/view/LoginView.dart';
 import 'package:cuse_cafe_connect/view/ProfileView.dart';
 import 'package:cuse_cafe_connect/view/ScheduleManagerView.dart';
 import 'package:cuse_cafe_connect/view/TradeBoardManagerView.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class SupervisorMainScreen extends StatefulWidget {
@@ -33,6 +35,18 @@ class _SupervisorMainScreenState extends State<SupervisorMainScreen> {
     });
   }
 
+  Future<void> _signOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('roleId');
+    await prefs.remove('userId');
+
+    // Navigate to LoginView
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginView()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,9 +60,7 @@ class _SupervisorMainScreenState extends State<SupervisorMainScreen> {
               Icons.exit_to_app,
               color: Colors.white, // Set signout button color to white
             ),
-            onPressed: () {
-              // _signOut();
-            },
+            onPressed: _signOut,
           ),
         ],
       ),
