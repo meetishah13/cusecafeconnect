@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart'; // Import Cupertino widgets
 import 'package:http/http.dart' as http;
 
 import '../controller/ScheduleController.dart';
@@ -70,32 +71,61 @@ class _PendingScheduleViewState extends State<PendingScheduleView> {
     String action = accept ? 'accept' : 'reject';
     TextEditingController commentController = TextEditingController();
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('$action Schedule'),
-          content: TextField(
-            controller: commentController,
-            decoration: InputDecoration(labelText: 'Enter comment'),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
+    if (Theme.of(context).platform == TargetPlatform.iOS) {
+      showCupertinoDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CupertinoAlertDialog(
+            title: Text('$action Schedule'),
+            content: CupertinoTextField(
+              controller: commentController,
+              placeholder: 'Enter comment',
             ),
-            TextButton(
-              onPressed: () {
-                _performAction(context, accept, scheduleId, commentController.text);
-              },
-              child: Text('Confirm'),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Cancel'),
+              ),
+              CupertinoDialogAction(
+                onPressed: () {
+                  _performAction(context, accept, scheduleId, commentController.text);
+                },
+                child: Text('Confirm'),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('$action Schedule'),
+            content: TextField(
+              controller: commentController,
+              decoration: InputDecoration(labelText: 'Enter comment'),
             ),
-          ],
-        );
-      },
-    );
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  _performAction(context, accept, scheduleId, commentController.text);
+                },
+                child: Text('Confirm'),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   void _performAction(BuildContext context, bool accept, int scheduleId, String comment) {

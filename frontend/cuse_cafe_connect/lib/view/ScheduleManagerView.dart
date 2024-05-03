@@ -81,7 +81,6 @@ class _ScheduleManagerViewState extends State<ScheduleManagerView> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    // Your widget content here
                                     Text(
                                       getWeekdayFromIndex(index),
                                       style: TextStyle(

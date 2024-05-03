@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart'; // Import Cupertino widgets
 import 'package:cuse_cafe_connect/controller/TradeBoardController.dart';
 import 'package:cuse_cafe_connect/model/TradeBoardModel.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TradeBoardGeneralView extends StatefulWidget {
@@ -114,34 +115,69 @@ class _TradeBoardGeneralViewState extends State<TradeBoardGeneralView> {
                     bool success = await widget.tbc
                         .requestForSub(tradeBoard.subId, userId);
                     if (success) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(
-                              'Success',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            content: Text(
-                              'Request successfully done.',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            backgroundColor: Colors.orange,
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  _loadData();
-                                },
+                      if (Theme.of(context).platform == TargetPlatform.iOS) {
+                        showCupertinoDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CupertinoAlertDialog(
+                              title: Text(
+                                'Success',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              content: Container(
+                                color: Colors.orange, // Background color
                                 child: Text(
-                                  'OK',
+                                  'Request successfully done.',
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
-                            ],
-                          );
-                        },
-                      );
+                              actions: <Widget>[
+                                CupertinoDialogAction(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    _loadData();
+                                  },
+                                  child: Text(
+                                    'OK',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(
+                                'Success',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              content: Container(
+                                color: Colors.orange, // Background color
+                                child: Text(
+                                  'Request successfully done.',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    _loadData();
+                                  },
+                                  child: Text(
+                                    'OK',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
                     } else {
                       showDialog(
                         context: context,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart'; // Import Cupertino widgets
 import 'package:cuse_cafe_connect/model/Shift.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -55,30 +56,50 @@ class _DropShiftScreenState extends State<DropShiftScreen> {
 
     if (response.statusCode == 200) {
       // Show an alert dialog
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Request Successful'),
-            content: Text('Your Request has been sent to the Supervisor.'),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                  /////////
-                  widget.onDropShiftSuccess(widget.scheduleId,
-                      widget.selectedDay); // Call the callback  drop shift
-                  /////////
-                  Navigator.pop(context); // Go back to the previous screen
-                },
-                child: Text('ok'),
-              ),
-            ],
-          );
-        },
-      );
+      if (Theme.of(context).platform == TargetPlatform.iOS) {
+        showCupertinoDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CupertinoAlertDialog(
+              title: Text('Request Successful'),
+              content: Text('Your Request has been sent to the Supervisor.'),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                    widget.onDropShiftSuccess(widget.scheduleId,
+                        widget.selectedDay); // Call the callback  drop shift
+                    Navigator.pop(context); // Go back to the previous screen
+                  },
+                  child: Text('ok'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Request Successful'),
+              content: Text('Your Request has been sent to the Supervisor.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                    widget.onDropShiftSuccess(widget.scheduleId,
+                        widget.selectedDay); // Call the callback  drop shift
+                    Navigator.pop(context); // Go back to the previous screen
+                  },
+                  child: Text('ok'),
+                ),
+              ],
+            );
+          },
+        );
+      }
     } else {
-      // Handle error response
       print('Drop shift failed: ${response.body}');
     }
   }

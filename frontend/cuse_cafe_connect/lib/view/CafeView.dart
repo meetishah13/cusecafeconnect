@@ -1,7 +1,7 @@
-import 'package:cuse_cafe_connect/view/CafeStudentView.dart';
 import 'package:flutter/material.dart';
 import 'package:cuse_cafe_connect/model/CafeModel.dart';
 import 'package:cuse_cafe_connect/controller/CafeController.dart';
+import 'package:cuse_cafe_connect/view/CafeStudentView.dart';
 
 class CafeView extends StatefulWidget {
   @override
@@ -44,39 +44,46 @@ class _CafeViewState extends State<CafeView> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : ListView.builder(
-              itemCount: _cafeList.length,
-              itemBuilder: (context, index) {
-                CafeModel cafe = _cafeList[index];
-                return GestureDetector(
-                  onTap: () {
-                    _navigateToCafeStudentView(cafe.cafeID);
-                  },
-                  child: Card(
-                    color: Color(0xFFF76900),
-                    child: ListTile(
-                      title: Text(
-                        '${cafe.cafeName}',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.0,
+          : Padding(
+              padding: EdgeInsets.fromLTRB(0, 30, 0, 0.0), // Add padding
+              child: ListView.builder(
+                itemCount: _cafeList.length,
+                itemBuilder: (context, index) {
+                  CafeModel cafe = _cafeList[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              CafeStudentView(cafeId: cafe.cafeID),
+                        ),
+                      );
+                    },
+                    child: Card(
+                      color: Color(0xFFF76900),
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              '${cafe.cafeName}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.0,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-    );
-  }
-
-  void _navigateToCafeStudentView(int cafeId) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CafeStudentView(cafeId: cafeId),
-      ),
     );
   }
 }
