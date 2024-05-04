@@ -51,5 +51,8 @@
         	<string>Allow access to photo library to upload profile pictures.</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>The app needs location permission</string>
+	<key>NSCameraUsageDescription</key>
+<string>Camera permission is required for taking photos</string>
+
 </dict>
 </plist>

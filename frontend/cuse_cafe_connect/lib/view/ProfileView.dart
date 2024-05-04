@@ -91,11 +91,32 @@ class _ProfileViewState extends State<ProfileView> {
           .ref()
           .child('profile_images')
           .child('${_userDetails!.userID}.jpg');
+
+      // Display a loading indicator
+      showDialog(
+        context: context,
+        barrierDismissible:
+            false, // Prevent dismissing the dialog by tapping outside
+        builder: (BuildContext context) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      );
+
       try {
         await ref.putFile(_selectedImageFile);
         imageUrl = await ref.getDownloadURL();
+
+        // Close the loading indicator dialog
+        Navigator.of(context).pop();
+
+        // Refresh the page after uploading the image
+        await _fetchUserDetails();
       } catch (error) {
         print("Firebase upload failed");
+        // Close the loading indicator dialog
+        Navigator.of(context).pop();
       }
     }
   }
@@ -137,9 +158,11 @@ class _ProfileViewState extends State<ProfileView> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ElevatedButton(
-          onPressed: () => _showImageSourceDialog(),
-          child: Text('Change Profile'),
+        Center(
+          child: ElevatedButton(
+            onPressed: () => _showImageSourceDialog(),
+            child: Text('Change Profile'),
+          ),
         ),
       ],
     );
@@ -195,6 +218,7 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget _buildProfileImage() {
+    print("Hello fp: " + _selectedImageFile.toString());
     if (_localProfileImagePath.startsWith('http')) {
       // If the image path is a URL, load it as a network image
       return Container(
@@ -293,13 +317,12 @@ class _ProfileViewState extends State<ProfileView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (_localProfileImagePath.isNotEmpty && !_isEditing)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            _buildProfileImage(),
-                          ],
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildProfileImage(),
+                        ],
+                      ),
                       _buildDetailItem('My Email', _emailController),
                       _buildDetailItem('First Name', _firstNameController),
                       _buildDetailItem('Last Name', _lastNameController),

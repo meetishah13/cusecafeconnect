@@ -24,8 +24,10 @@ class _AddShiftsViewState extends State<AddShiftsView> {
     super.initState();
     _loadData();
   }
-  void _loadData(){
-    _futureTimeSlots = StuCafeGroupController().fetchTimeSlotsByCafeId('ios', widget.cafeID);
+
+  void _loadData() {
+    _futureTimeSlots =
+        StuCafeGroupController().fetchTimeSlotsByCafeId('ios', widget.cafeID);
     _selectedShiftId = 0; // Set initial value to null
     _commentsController = TextEditingController();
 
@@ -53,7 +55,8 @@ class _AddShiftsViewState extends State<AddShiftsView> {
                 children: [
                   Text(
                     'Select Available Shift:',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
                   ),
                   SizedBox(height: 16.0),
                   DropdownButtonFormField<int>(
@@ -62,8 +65,9 @@ class _AddShiftsViewState extends State<AddShiftsView> {
                         value: timeSlot.timeSlotId,
                         child: Text(
                             ' ${timeSlot.timeSlotDay} - ${timeSlot.timeSlot} ',
-                            style: TextStyle( fontSize: 11.0) // Handle overflow with ellipsis
-                        ),
+                            style: TextStyle(
+                                fontSize: 11.0) // Handle overflow with ellipsis
+                            ),
                       );
                     }).toList(),
                     onChanged: (int? selectedShiftId) {
@@ -101,7 +105,8 @@ class _AddShiftsViewState extends State<AddShiftsView> {
   void submitForm() async {
     // Check if a shift is selected
     if (_selectedShiftId != 0) {
-      bool success = await StuCafeGroupController().requestShift('ios', userID, widget.cafeID, _selectedShiftId, _commentsController.text);
+      bool success = await StuCafeGroupController().requestShift('ios', userID,
+          widget.cafeID, _selectedShiftId, _commentsController.text);
       if (success) {
         // Shift request submitted successfully
         // Shift request subappmitted successfully
@@ -117,6 +122,10 @@ class _AddShiftsViewState extends State<AddShiftsView> {
         );
       } else {
         // Failed to submit shift request
+        Navigator.pop(context, true); // Close the dialog with success status
+        setState(() {
+          _loadData();
+        });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('Failed to submit shift request'),
@@ -126,6 +135,10 @@ class _AddShiftsViewState extends State<AddShiftsView> {
       }
     } else {
       // No shift selected
+      Navigator.pop(context, true); // Close the dialog with success status
+      setState(() {
+        _loadData();
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Please select a shift'),

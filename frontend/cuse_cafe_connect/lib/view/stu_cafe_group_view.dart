@@ -51,49 +51,61 @@ class _StuCafeGroupViewState extends State<StuCafeGroupView> {
                 body: TabBarView(
                   children: [
                     if (data.containsKey('cafesByUser'))
-                      ListView.builder(
-                        itemCount: data['cafesByUser']!.length,
-                        itemBuilder: (context, index) {
-                          StuCafeGroup cafe = data['cafesByUser']![index];
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => GoogleReviewsScreen(
-                                    cafeName: cafe.cafeName,
-                                    cafeLat: cafe.latitude,
-                                    cafeLong: cafe.longitude,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: _buildCafeCard(cafe),
-                          );
-                        },
-                      ),
+                      data['cafesByUser']!.length > 0
+                          ? ListView.builder(
+                              itemCount: data['cafesByUser']!.length,
+                              itemBuilder: (context, index) {
+                                StuCafeGroup cafe = data['cafesByUser']![index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            GoogleReviewsScreen(
+                                          cafeName: cafe.cafeName,
+                                          cafeLat: cafe.latitude,
+                                          cafeLong: cafe.longitude,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: _buildCafeCard(cafe),
+                                );
+                              },
+                            )
+                          : Center(
+                              child: Text('You are not in any group'),
+                            ),
                     if (data.containsKey('requestedCafe'))
-                      ListView.builder(
-                        itemCount: data['requestedCafe']!.length,
-                        itemBuilder: (context, index) {
-                          StuCafeGroup cafe = data['requestedCafe']![index];
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => GoogleReviewsScreen(
-                                    cafeName: cafe.cafeName,
-                                    cafeLat: cafe.latitude,
-                                    cafeLong: cafe.longitude,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: _buildCafeCard(cafe),
-                          );
-                        },
-                      ),
+                      data['requestedCafe']!.length > 0
+                          ? ListView.builder(
+                              itemCount: data['requestedCafe']!.length,
+                              itemBuilder: (context, index) {
+                                StuCafeGroup cafe =
+                                    data['requestedCafe']![index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            GoogleReviewsScreen(
+                                          cafeName: cafe.cafeName,
+                                          cafeLat: cafe.latitude,
+                                          cafeLong: cafe.longitude,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: _buildCafeCard(cafe),
+                                );
+                              },
+                            )
+                          : Center(
+                              child:
+                                  Text('You have not requested any group yet'),
+                            ),
                     if (data.containsKey('cafesNotMember'))
                       ListView.builder(
                         itemCount: data['cafesNotMember']!.length,
@@ -231,46 +243,45 @@ class _StuCafeGroupViewState extends State<StuCafeGroupView> {
               onTap: cafe.isAccepted == 2
                   ? null // Disable tap if isAccepted is 2
                   : () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return Dialog(
-                      child: AddShiftsView(cafeID: cafe.cafeID),
-                    );
-                  },
-                ).then((value) {
-                  if (value == true) {
-                    // Reload the page if the dialog is closed with success status
-                    setState(() {});
-                  }
-                });
-              },
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                            child: AddShiftsView(cafeID: cafe.cafeID),
+                          );
+                        },
+                      ).then((value) {
+                        if (value == true) {
+                          // Reload the page if the dialog is closed with success status
+                          setState(() {});
+                        }
+                      });
+                    },
               child: cafe.isAccepted == 2
                   ? Icon(
-                Icons.cancel,
-                color: Colors.red,
-              )
+                      Icons.cancel,
+                      color: Colors.red,
+                    )
                   : Container(
-                padding: EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                  color: Color(0xFF040261),
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                child: Text(
-                  'Add',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+                      padding: EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        color: Color(0xFF040261),
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Text(
+                        'Add',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
             ),
           ),
         ],
       ),
     );
   }
-
 
   String getDeviceType() {
     if (Platform.isIOS) {

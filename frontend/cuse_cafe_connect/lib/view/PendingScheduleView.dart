@@ -17,7 +17,8 @@ class _PendingScheduleViewState extends State<PendingScheduleView> {
   Widget build(BuildContext context) {
     return FutureBuilder<List<PendingSchedule>>(
       future: controller.fetchPendingSchedules(),
-      builder: (BuildContext context, AsyncSnapshot<List<PendingSchedule>> snapshot) {
+      builder: (BuildContext context,
+          AsyncSnapshot<List<PendingSchedule>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
@@ -39,21 +40,27 @@ class _PendingScheduleViewState extends State<PendingScheduleView> {
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Cafe Name: ${pendingSchedules[index].cafeName}'),
-                              Text('Time Slot: ${pendingSchedules[index].timeSlot}'),
-                              Text('Day: ${pendingSchedules[index].timeSlotDay}'),
+                              Text(
+                                  'Cafe Name: ${pendingSchedules[index].cafeName}'),
+                              Text(
+                                  'Time Slot: ${pendingSchedules[index].timeSlot}'),
+                              Text(
+                                  'Day: ${pendingSchedules[index].timeSlotDay}'),
                             ],
                           ),
                           trailing: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
-                                icon: Icon(Icons.check_circle, color: Colors.green),
-                                onPressed: () => _showCommentDialog(context, true, pendingSchedules[index].scheduleId),
+                                icon: Icon(Icons.check_circle,
+                                    color: Colors.green),
+                                onPressed: () => _showCommentDialog(context,
+                                    true, pendingSchedules[index].scheduleId),
                               ),
                               IconButton(
                                 icon: Icon(Icons.cancel, color: Colors.red),
-                                onPressed: () => _showCommentDialog(context, false, pendingSchedules[index].scheduleId),
+                                onPressed: () => _showCommentDialog(context,
+                                    false, pendingSchedules[index].scheduleId),
                               ),
                             ],
                           ),
@@ -68,7 +75,7 @@ class _PendingScheduleViewState extends State<PendingScheduleView> {
   }
 
   void _showCommentDialog(BuildContext context, bool accept, int scheduleId) {
-    String action = accept ? 'accept' : 'reject';
+    String action = accept ? 'Accept' : 'Reject';
     TextEditingController commentController = TextEditingController();
 
     if (Theme.of(context).platform == TargetPlatform.iOS) {
@@ -90,7 +97,8 @@ class _PendingScheduleViewState extends State<PendingScheduleView> {
               ),
               CupertinoDialogAction(
                 onPressed: () {
-                  _performAction(context, accept, scheduleId, commentController.text);
+                  _performAction(
+                      context, accept, scheduleId, commentController.text);
                 },
                 child: Text('Confirm'),
               ),
@@ -117,7 +125,8 @@ class _PendingScheduleViewState extends State<PendingScheduleView> {
               ),
               TextButton(
                 onPressed: () {
-                  _performAction(context, accept, scheduleId, commentController.text);
+                  _performAction(
+                      context, accept, scheduleId, commentController.text);
                 },
                 child: Text('Confirm'),
               ),
@@ -128,12 +137,15 @@ class _PendingScheduleViewState extends State<PendingScheduleView> {
     }
   }
 
-  void _performAction(BuildContext context, bool accept, int scheduleId, String comment) {
+  void _performAction(
+      BuildContext context, bool accept, int scheduleId, String comment) {
     if (accept) {
       controller.acceptSchedule(scheduleId, comment).then((success) {
         setState(() {}); // Reload the view
         Navigator.of(context).pop(); // Dismiss the dialog
-        final message = success ? 'Schedule accepted successfully' : 'Error accepting schedule';
+        final message = success
+            ? 'Schedule accepted successfully'
+            : 'Error accepting schedule';
         final color = success ? Colors.green : Colors.red;
         _showSnackbar(context, message, color);
       });
@@ -141,7 +153,9 @@ class _PendingScheduleViewState extends State<PendingScheduleView> {
       controller.rejectSchedule(scheduleId, comment).then((success) {
         setState(() {}); // Reload the view
         Navigator.of(context).pop(); // Dismiss the dialog
-        final message = success ? 'Schedule rejected successfully' : 'Error rejecting schedule';
+        final message = success
+            ? 'Schedule rejected successfully'
+            : 'Error rejecting schedule';
         final color = success ? Colors.green : Colors.red;
         _showSnackbar(context, message, color);
       });

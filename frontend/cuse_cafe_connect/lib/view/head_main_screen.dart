@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class HeadMainScreen extends StatefulWidget {
   @override
   _HeadMainScreenState createState() => _HeadMainScreenState();
@@ -47,7 +46,7 @@ class _HeadMainScreenState extends State<HeadMainScreen> {
       appBar: AppBar(
         title: Text('Cuse Cafe Connect'),
         backgroundColor: Color(0xFFF76900),
-        foregroundColor: Colors.white,// Set background color to F76900
+        foregroundColor: Colors.white, // Set background color to F76900
         actions: [
           IconButton(
             icon: Icon(
