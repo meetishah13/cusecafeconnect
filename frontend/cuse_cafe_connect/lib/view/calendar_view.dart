@@ -326,8 +326,11 @@ class _CalendarViewState extends State<CalendarView> {
     if (!hasSchedules && !isMarkedDay) {
       return Center(
         child: Text(
-          'No shift schedules for this day.',
-          style: TextStyle(fontSize: 16),
+          'You dont have any shifts for today :)',
+          style: TextStyle(
+            fontSize: 13,
+            color: Colors.grey,
+          ),
         ),
       );
     } else {
